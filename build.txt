@@ -1,0 +1,12 @@
+﻿author = jopojelly
+version = 0.1
+displayName = Auto Trash
+homepage = http://forums.terraria.org/index.php?threads/cheat-sheet.41407/
+buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*
+hideCode = false
+hideResources = false
+includeSource = true
+languageVersion = 6
+includePDB = true
+notworkingside = Client
+languageVersion = 6
