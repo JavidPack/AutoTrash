@@ -1,7 +1,7 @@
 ﻿author = jopojelly
 version = 0.1
 displayName = Auto Trash
-homepage = http://forums.terraria.org/index.php?threads/cheat-sheet.41407/
+homepage = https://forums.terraria.org/index.php?threads/auto-trash.53592/
 buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*
 hideCode = false
 hideResources = false
