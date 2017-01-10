@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.ID;
 
 namespace AutoTrash
 {
@@ -49,14 +50,9 @@ namespace AutoTrash
 
 		internal void DrawUpdateAutoTrash()
 		{
-			/*
-			Texture2D trashTexture = Main.trashTexture;
-				Vector2 position5 = position + texture2D.Size() * inventoryScale / 2f - trashTexture.Size() * inventoryScale / 2f;
-				spriteBatch.Draw(trashTexture, position5, null, new Color(100, 100, 100, 100), 0f, default(Vector2), inventoryScale, SpriteEffects.None, 0f);
-			*/
 			if (Main.playerInventory)
 			{
-				Point value = new Point(Main.mouseX, Main.mouseY);
+				Point mousePoint = new Point(Main.mouseX, Main.mouseY);
 
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
@@ -72,34 +68,47 @@ namespace AutoTrash
 
 				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>(mod);
 				// Toggle Button
-				Texture2D texture2D = Main.inventoryTickOnTexture;
+				Texture2D inventoryTickTexture = Main.inventoryTickOnTexture;
 				if (!autoTrashPlayer.AutoTrashEnabled)
 				{
-					texture2D = Main.inventoryTickOffTexture;
+					inventoryTickTexture = Main.inventoryTickOffTexture;
 				}
-				Rectangle r = new Rectangle(xPosition, yPosition, (int)((float)Main.inventoryBackTexture.Width * Main.inventoryScale), (int)((float)Main.inventoryBackTexture.Height * Main.inventoryScale));
-				Rectangle r2 = new Rectangle(r.Left + (int)(40 * Main.inventoryScale), r.Top - 2, texture2D.Width, texture2D.Height);
-				Rectangle r3 = new Rectangle(r.Left + (int)(40 * Main.inventoryScale), r.Bottom - 9, texture2D.Width, texture2D.Height);
+				Rectangle slotRectangle = new Rectangle(xPosition, yPosition, (int)((float)Main.inventoryBackTexture.Width * Main.inventoryScale), (int)((float)Main.inventoryBackTexture.Height * Main.inventoryScale));
+				Rectangle enableButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale), slotRectangle.Top - 2, inventoryTickTexture.Width, inventoryTickTexture.Height);
+				Rectangle listButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale) + 1, slotRectangle.Top + 13, inventoryTickTexture.Width, inventoryTickTexture.Height);
+				Rectangle clearButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale), slotRectangle.Bottom - 9, inventoryTickTexture.Width, inventoryTickTexture.Height);
 
-				bool smallButtonHover = false;
+				bool enableButtonHover = false;
+				bool listButtonHover = false;
 				bool clearButtonHover = false;
-				if (r2.Contains(value))
+				if (enableButtonRectangle.Contains(mousePoint))
 				{
 					Main.LocalPlayer.mouseInterface = true;
-					smallButtonHover = true;
+					enableButtonHover = true;
 					if (Main.mouseLeft && Main.mouseLeftRelease)
 					{
 						autoTrashPlayer.AutoTrashEnabled = !autoTrashPlayer.AutoTrashEnabled;
 
 						Main.mouseLeftRelease = false;
-						Main.PlaySound(12, -1, -1, 1);
+						Main.PlaySound(SoundID.MenuTick);
 						if (Main.netMode == 1)
 						{
 							//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
 						}
 					}
 				}
-				if (r3.Contains(value))
+				if (listButtonRectangle.Contains(mousePoint))
+				{
+					Main.LocalPlayer.mouseInterface = true;
+					listButtonHover = true;
+					if (Main.mouseLeft && Main.mouseLeftRelease)
+					{
+						AutoTrash.instance.autoTrashListUI.UpdateNeeded();
+						AutoTrashListUI.visible = !AutoTrashListUI.visible;
+						Main.PlaySound(AutoTrashListUI.visible ? SoundID.MenuOpen : SoundID.MenuClose);
+					}
+				}
+				if (clearButtonRectangle.Contains(mousePoint))
 				{
 					Main.LocalPlayer.mouseInterface = true;
 					clearButtonHover = true;
@@ -107,7 +116,7 @@ namespace AutoTrash
 					{
 						autoTrashPlayer.AutoTrashItems.Clear();
 						Main.mouseLeftRelease = false;
-						Main.PlaySound(12, -1, -1, 1);
+						Main.PlaySound(SoundID.MenuTick);
 						autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
 						if (Main.netMode == 1)
 						{
@@ -118,13 +127,13 @@ namespace AutoTrash
 
 
 				singleSlotArray[0] = autoTrashPlayer.LastAutoTrashItem;
-				if (r.Contains(value) && !smallButtonHover && !clearButtonHover)
+				if (slotRectangle.Contains(mousePoint) && !enableButtonHover && !clearButtonHover && !listButtonHover)
 				{
 					Main.LocalPlayer.mouseInterface = true;
 					if (Main.mouseLeftRelease && Main.mouseLeft && autoTrashPlayer.AutoTrashEnabled)
 					{
 						int originalID = singleSlotArray[0].type;
-						ItemSlot.LeftClick(singleSlotArray, ItemSlot.Context.TrashItem);
+						Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
 						Recipe.FindRecipes();
 						int newID = singleSlotArray[0].type;
 						// Add 
@@ -141,6 +150,7 @@ namespace AutoTrash
 							if (!autoTrashPlayer.AutoTrashItems.Any(x => x.type == newID))
 								autoTrashPlayer.AutoTrashItems.Add(newItem);
 						}
+						AutoTrash.instance.autoTrashListUI.UpdateNeeded();
 					}
 					//ItemSlot.MouseHover(singleSlotArray, 6);
 					Main.toolTip = new Item();
@@ -163,17 +173,17 @@ namespace AutoTrash
 				singleSlotArray[0].newAndShiny = false;
 				if (!autoTrashPlayer.AutoTrashEnabled)
 				{
-					ItemSlot.Draw(Main.spriteBatch, singleSlotArray, ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
 				else
 				{
-					ItemSlot.Draw(Main.spriteBatch, singleSlotArray, ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
 				autoTrashPlayer.LastAutoTrashItem = singleSlotArray[0];
-				Main.spriteBatch.Draw(texture2D, r2.TopLeft(), Color.White * 0.7f);
-				//Texture2D clearTexture = mod.GetTexture("UI/closeButton");
-				Main.spriteBatch.Draw(clearTexture, r3.TopLeft(), Color.White * 0.7f);
-				if (smallButtonHover)
+				Main.spriteBatch.Draw(inventoryTickTexture, enableButtonRectangle.TopLeft(), Color.White * 0.7f);
+				Main.spriteBatch.Draw(Main.instance.infoIconTexture[5], listButtonRectangle.TopLeft(), Color.White * 0.7f);
+				Main.spriteBatch.Draw(clearTexture, clearButtonRectangle.TopLeft(), Color.White * 0.7f);
+				if (enableButtonHover)
 				{
 					Main.toolTip = new Item();
 					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled ? "Auto-Trash Enabled: " + autoTrashPlayer.AutoTrashItems.Count + " items" : "Auto-Trash Disabled";
@@ -183,6 +193,12 @@ namespace AutoTrash
 					Main.toolTip = new Item();
 					Main.hoverItemName = "Click to Clear Auto-Trash list";
 				}
+				if (listButtonHover)
+				{
+					Main.toolTip = new Item();
+					Main.hoverItemName = "Click to View Auto-Trash list";
+				}
+
 				Main.inventoryScale = 0.85f;
 
 				//AutoTrashPlayer csp = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>(mod);

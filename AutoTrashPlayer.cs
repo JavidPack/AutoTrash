@@ -34,6 +34,8 @@ namespace AutoTrash
 		{
 			AutoTrashItems = tag.GetList<TagCompound>("AutoTrashItems").Select(ItemIO.Load).ToList();
 			AutoTrashEnabled = tag.GetBool("AutoTrashEnabled");
+
+			AutoTrash.instance.autoTrashListUI.UpdateNeeded();
 		}
 
 		internal static bool IsModItem(Item item)

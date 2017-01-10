@@ -61,8 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoTrashGlobalItem.cs" />
+    <Compile Include="AutoTrashListUI.cs" />
     <Compile Include="AutoTrashPlayer.cs" />
     <Compile Include="AutoTrash.cs" />
+    <Compile Include="ItemSlot.cs" />
+    <Compile Include="UIGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Modding\tModLoader\src\tModLoader\Terraria.csproj">

@@ -2,6 +2,8 @@
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System;
+using Terraria;
+using Terraria.UI;
 
 namespace AutoTrash
 {
@@ -9,6 +11,8 @@ namespace AutoTrash
 	{
 		internal static AutoTrash instance;
 		internal AutoTrashGlobalItem autoTrashGlobalItem;
+		internal static UserInterface autoTrashUserInterface;
+		internal AutoTrashListUI autoTrashListUI;
 
 		public AutoTrash()
 		{
@@ -31,6 +35,13 @@ namespace AutoTrash
 			}
 			instance = this;
 			autoTrashGlobalItem = (AutoTrashGlobalItem)GetGlobalItem("AutoTrashGlobalItem");
+			if (!Main.dedServ)
+			{
+				autoTrashListUI = new AutoTrashListUI();
+				autoTrashListUI.Activate();
+				autoTrashUserInterface = new UserInterface();
+				autoTrashUserInterface.SetState(autoTrashListUI);
+			}
 		}
 
 		public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
@@ -39,10 +50,28 @@ namespace AutoTrash
 			if (inventoryLayerIndex != -1)
 			{
 				layers.Insert(inventoryLayerIndex, new MethodSequenceListItem(
-					"AutoTrash: Auto Trash",
+					"AutoTrash: Auto Trash Slot",
 					delegate
 					{
 						autoTrashGlobalItem.DrawUpdateAutoTrash();
+						return true;
+					},
+					null)
+				);
+			}
+
+			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+			if (MouseTextIndex != -1)
+			{
+				layers.Insert(MouseTextIndex, new MethodSequenceListItem(
+					"AutoTrash: Auto Trash List",
+					delegate
+					{
+						if (AutoTrashListUI.visible)
+						{
+							autoTrashUserInterface.Update(Main._drawInterfaceGameTime);
+							autoTrashListUI.Draw(Main.spriteBatch);
+						}
 						return true;
 					},
 					null)
