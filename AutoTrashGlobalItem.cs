@@ -19,7 +19,10 @@ namespace AutoTrash
 
 		public override bool Autoload(ref string name)
 		{
-			clearTexture = mod.GetTexture("closeButton");
+			if (Main.netMode != 2)
+			{
+				clearTexture = mod.GetTexture("closeButton");
+			}
 			return base.Autoload(ref name);
 		}
 
