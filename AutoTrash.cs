@@ -44,26 +44,26 @@ namespace AutoTrash
 			}
 		}
 
-		public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int inventoryLayerIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 			if (inventoryLayerIndex != -1)
 			{
-				layers.Insert(inventoryLayerIndex, new MethodSequenceListItem(
+				layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer(
 					"AutoTrash: Auto Trash Slot",
 					delegate
 					{
 						autoTrashGlobalItem.DrawUpdateAutoTrash();
 						return true;
 					},
-					null)
+					InterfaceScaleType.UI)
 				);
 			}
 
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
 			{
-				layers.Insert(MouseTextIndex, new MethodSequenceListItem(
+				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
 					"AutoTrash: Auto Trash List",
 					delegate
 					{
@@ -74,7 +74,7 @@ namespace AutoTrash
 						}
 						return true;
 					},
-					null)
+					InterfaceScaleType.UI)
 				);
 			}
 		}

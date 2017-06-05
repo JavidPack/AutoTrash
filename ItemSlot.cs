@@ -85,7 +85,7 @@ namespace AutoTrash
 			if (IsMouseHovering)
 			{
 				//Main.toolTip = item.Clone();
-				Main.hoverItemName = item.name;
+				Main.hoverItemName = item.Name;
 				//ItemChecklistUI.hoverText = item.name + (item.modItem != null ? " [" + item.modItem.mod.Name + "]" : "");
 			}
 		}

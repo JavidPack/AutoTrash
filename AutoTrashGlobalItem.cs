@@ -11,7 +11,7 @@ namespace AutoTrash
 	class AutoTrashGlobalItem : GlobalItem
 	{
 		private static Item[] singleSlotArray;
-		Texture2D clearTexture;
+		private static Texture2D clearTexture;
 
 		public AutoTrashGlobalItem()
 		{
@@ -115,7 +115,7 @@ namespace AutoTrash
 					if (Main.mouseLeft && Main.mouseLeftRelease)
 					{
 						autoTrashPlayer.AutoTrashItems.Clear();
-						Main.mouseLeftRelease = false;
+						Main.mouseLeftRelease = false; // needed?
 						Main.PlaySound(SoundID.MenuTick);
 						autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
 						if (Main.netMode == 1)
@@ -153,7 +153,7 @@ namespace AutoTrash
 						AutoTrash.instance.autoTrashListUI.UpdateNeeded();
 					}
 					//ItemSlot.MouseHover(singleSlotArray, 6);
-					Main.toolTip = new Item();
+					Main.HoverItem = new Item();
 					if (autoTrashPlayer.AutoTrashEnabled)
 					{
 						//if (Main.mouseItem.type > 0)
@@ -180,22 +180,23 @@ namespace AutoTrash
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
 				autoTrashPlayer.LastAutoTrashItem = singleSlotArray[0];
+				// want 0.7f??
 				Main.spriteBatch.Draw(inventoryTickTexture, enableButtonRectangle.TopLeft(), Color.White * 0.7f);
 				Main.spriteBatch.Draw(Main.instance.infoIconTexture[5], listButtonRectangle.TopLeft(), Color.White * 0.7f);
 				Main.spriteBatch.Draw(clearTexture, clearButtonRectangle.TopLeft(), Color.White * 0.7f);
 				if (enableButtonHover)
 				{
-					Main.toolTip = new Item();
+					Main.HoverItem = new Item();
 					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled ? "Auto-Trash Enabled: " + autoTrashPlayer.AutoTrashItems.Count + " items" : "Auto-Trash Disabled";
 				}
 				if (clearButtonHover)
 				{
-					Main.toolTip = new Item();
+					Main.HoverItem = new Item();
 					Main.hoverItemName = "Click to Clear Auto-Trash list";
 				}
 				if (listButtonHover)
 				{
-					Main.toolTip = new Item();
+					Main.HoverItem = new Item();
 					Main.hoverItemName = "Click to View Auto-Trash list";
 				}
 
