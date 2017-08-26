@@ -44,6 +44,12 @@ namespace AutoTrash
 			}
 		}
 
+		public override void Unload()
+		{
+			instance = null;
+			autoTrashUserInterface = null;
+		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int inventoryLayerIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
