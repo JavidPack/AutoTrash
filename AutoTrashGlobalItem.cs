@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.ID;
+using Microsoft.Xna.Framework.Input;
 
 namespace AutoTrash
 {
@@ -114,13 +115,21 @@ namespace AutoTrash
 					clearButtonHover = true;
 					if (Main.mouseLeft && Main.mouseLeftRelease)
 					{
-						autoTrashPlayer.AutoTrashItems.Clear();
-						Main.mouseLeftRelease = false; // needed?
-						Main.PlaySound(SoundID.MenuTick);
-						autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
-						if (Main.netMode == 1)
+						if (Main.keyState.IsKeyDown(Keys.LeftAlt) || Main.keyState.IsKeyDown(Keys.RightAlt))
 						{
-							//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+							autoTrashPlayer.AutoTrashItems.Clear();
+							AutoTrash.instance.autoTrashListUI.UpdateNeeded();
+							Main.mouseLeftRelease = false; // needed?
+							Main.PlaySound(SoundID.MenuTick);
+							autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
+							if (Main.netMode == 1)
+							{
+								//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+							}
+						}
+						else
+						{
+							Main.NewText("You need to hold alt and click to clear the list");
 						}
 					}
 				}
@@ -192,7 +201,7 @@ namespace AutoTrash
 				if (clearButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = "Click to Clear Auto-Trash list";
+					Main.hoverItemName = "Hold Alt and Click to Clear Auto-Trash list";
 				}
 				if (listButtonHover)
 				{
