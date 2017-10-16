@@ -72,7 +72,9 @@ namespace AutoTrash
 					{
 						if (Main.cursorOverride == 6 && (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl)))
 						{
-							Main.cursorOverride = 5;
+							var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
+							if (autoTrashPlayer.AutoTrashEnabled)
+								Main.cursorOverride = 5;
 						}
 						return true;
 					},
