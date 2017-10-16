@@ -1,2 +1,4 @@
 ﻿Adds an Auto-Trash Slot:
 Place items in the Auto-Trash slot to immediately trash them as they are picked up later. Useful for all those items that clutter your inventory. 
+
+Shift+Ctrl click inventory items to quickly add to auto trash list.

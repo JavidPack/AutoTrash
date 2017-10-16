@@ -4,6 +4,7 @@ using Terraria.DataStructures;
 using System;
 using Terraria;
 using Terraria.UI;
+using Microsoft.Xna.Framework.Input;
 
 namespace AutoTrash
 {
@@ -60,6 +61,19 @@ namespace AutoTrash
 					delegate
 					{
 						autoTrashGlobalItem.DrawUpdateAutoTrash();
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+
+				layers.Insert(inventoryLayerIndex + 2, new LegacyGameInterfaceLayer(
+					"AutoTrash: Auto Trash Cursor",
+					delegate
+					{
+						if (Main.cursorOverride == 6 && (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl)))
+						{
+							Main.cursorOverride = 5;
+						}
 						return true;
 					},
 					InterfaceScaleType.UI)
