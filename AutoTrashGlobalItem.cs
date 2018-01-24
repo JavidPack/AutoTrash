@@ -57,8 +57,8 @@ namespace AutoTrash
 
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
-				int xPosition = 448;
-				int yPosition = Main.instance.invBottom;
+				int xPosition = 448 + AutoTrash.config.XOffset;
+				int yPosition = Main.instance.invBottom + AutoTrash.config.YOffset;
 				if ((Main.LocalPlayer.chest != -1 && !Main.recBigList) || Main.npcShop > 0)
 				{
 					Main.inventoryScale = 0.755f;

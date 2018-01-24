@@ -5,12 +5,14 @@ using System;
 using Terraria;
 using Terraria.UI;
 using Microsoft.Xna.Framework.Input;
+using System.ComponentModel;
 
 namespace AutoTrash
 {
 	internal class AutoTrash : Mod
 	{
 		internal static AutoTrash instance;
+		internal static AutoTrashConfig config;
 		internal AutoTrashGlobalItem autoTrashGlobalItem;
 		internal static UserInterface autoTrashUserInterface;
 		internal AutoTrashListUI autoTrashListUI;
@@ -99,6 +101,32 @@ namespace AutoTrash
 					InterfaceScaleType.UI)
 				);
 			}
+		}
+	}
+
+	public class AutoTrashConfig : ModConfig
+	{
+		public override MultiplayerSyncMode Mode
+		{
+			get
+			{
+				return MultiplayerSyncMode.UniquePerPlayer;
+			}
+		}
+
+		[DefaultValue(0f)]
+		[Range(-500, 500)]
+		[Label("AutoTrash Slot X Offset")]
+		public int XOffset;
+
+		[DefaultValue(0f)]
+		[Range(-500, 500)]
+		[Label("AutoTrash Slot Y Offset")]
+		public int YOffset;
+		
+		public override void PostAutoLoad()
+		{
+			AutoTrash.config = this;
 		}
 	}
 }
