@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.UI;
 using Microsoft.Xna.Framework.Input;
 using System.ComponentModel;
+using System.Linq;
 
 namespace AutoTrash
 {
@@ -100,6 +101,16 @@ namespace AutoTrash
 					},
 					InterfaceScaleType.UI)
 				);
+			}
+		}
+
+		public override void PostSetupContent()
+		{
+			Mod RecipeBrowser = ModLoader.GetMod("RecipeBrowser");
+			if (RecipeBrowser != null)
+			{
+				RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"), 
+					(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().AutoTrashItems.Any(x => x.type == item.type)));
 			}
 		}
 	}
