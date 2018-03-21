@@ -19,7 +19,7 @@ namespace AutoTrash
 		{
 			AutoTrashItems = new List<Item>();
 			LastAutoTrashItem = new Item();
-			LastAutoTrashItem.SetDefaults();
+			LastAutoTrashItem.SetDefaults(0, true);
 			AutoTrashEnabled = false;
 		}
 
