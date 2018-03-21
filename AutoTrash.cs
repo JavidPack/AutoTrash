@@ -104,11 +104,14 @@ namespace AutoTrash
 
 		public override void PostSetupContent()
 		{
-			Mod RecipeBrowser = ModLoader.GetMod("RecipeBrowser");
-			if (RecipeBrowser != null)
+			if (!Main.dedServ)
 			{
-				RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"), 
-					(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().AutoTrashItems.Any(x => x.type == item.type)));
+				Mod RecipeBrowser = ModLoader.GetMod("RecipeBrowser");
+				if (RecipeBrowser != null)
+				{
+					RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"),
+						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().AutoTrashItems.Any(x => x.type == item.type)));
+				}
 			}
 		}
 	}
