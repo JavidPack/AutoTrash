@@ -51,16 +51,15 @@ namespace AutoTrash
 			{
 				if (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl))
 				{
-					var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
-					if (autoTrashPlayer.AutoTrashEnabled && !autoTrashPlayer.AutoTrashItems.Any(x => x.type == inventory[slot].type))
+					if (AutoTrashEnabled && !AutoTrashItems.Any(x => x.type == inventory[slot].type))
 					{
 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
 
 						Item newItem = new Item();
 						newItem.SetDefaults(inventory[slot].type);
-						autoTrashPlayer.AutoTrashItems.Add(newItem);
+						AutoTrashItems.Add(newItem);
 
-						autoTrashPlayer.LastAutoTrashItem = inventory[slot].Clone();
+						LastAutoTrashItem = inventory[slot].Clone();
 
 						inventory[slot].SetDefaults();
 
@@ -78,15 +77,16 @@ namespace AutoTrash
 			// Fishing uses player.GetItem bypassing AutoTrash.
 			if (Main.myPlayer == player.whoAmI)
 			{
-				if(caughtFish > 0)
+				if(caughtFish > 0 && AutoTrashItems.Where(x => x.type == caughtFish).Any())
 				{
 					for (int i = 0; i < 59; i++)
 					{
 						if (!player.inventory[i].IsAir && player.inventory[i].type == caughtFish)
 						{
 							// TODO: Analyze performance impact? do every 60 frames only?
-							player.trashItem = player.inventory[i].Clone();
+							LastAutoTrashItem = player.inventory[i].Clone();
 							player.inventory[i].TurnToAir();
+							break;
 						}
 					}
 				}
