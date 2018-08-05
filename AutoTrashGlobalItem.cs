@@ -49,6 +49,11 @@ namespace AutoTrash
 			return true;
 		}
 
+		public override void CaughtFishStack(int type, ref int stack)
+		{
+			AutoTrashPlayer.caughtFish = type;
+		}
+
 		internal void DrawUpdateAutoTrash()
 		{
 			if (Main.playerInventory)

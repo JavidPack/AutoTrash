@@ -11,6 +11,7 @@ namespace AutoTrash
 {
 	internal class AutoTrash : Mod
 	{
+		// TODO: Pre-designed trash items sets. Sorting arrays?
 		internal static AutoTrash instance;
 		internal AutoTrashGlobalItem autoTrashGlobalItem;
 		internal static UserInterface autoTrashUserInterface;

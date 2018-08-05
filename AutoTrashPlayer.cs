@@ -37,7 +37,7 @@ namespace AutoTrash
 			AutoTrashItems = tag.GetList<TagCompound>("AutoTrashItems").Select(ItemIO.Load).ToList();
 			AutoTrashEnabled = tag.GetBool("AutoTrashEnabled");
 
-			AutoTrash.instance.autoTrashListUI.UpdateNeeded();
+			AutoTrash.instance.autoTrashListUI?.UpdateNeeded();
 		}
 
 		internal static bool IsModItem(Item item)
@@ -70,6 +70,28 @@ namespace AutoTrash
 				}
 			}
 			return false; // do default behavior.
+		}
+
+		public static int caughtFish;
+		public override void PreUpdate()
+		{
+			// Fishing uses player.GetItem bypassing AutoTrash.
+			if (Main.myPlayer == player.whoAmI)
+			{
+				if(caughtFish > 0)
+				{
+					for (int i = 0; i < 59; i++)
+					{
+						if (!player.inventory[i].IsAir && player.inventory[i].type == caughtFish)
+						{
+							// TODO: Analyze performance impact? do every 60 frames only?
+							player.trashItem = player.inventory[i].Clone();
+							player.inventory[i].TurnToAir();
+						}
+					}
+				}
+				caughtFish = 0;
+			}
 		}
 	}
 }
