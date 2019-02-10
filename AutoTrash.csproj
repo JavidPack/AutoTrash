@@ -65,6 +65,7 @@
     <Compile Include="AutoTrashPlayer.cs" />
     <Compile Include="AutoTrash.cs" />
     <Compile Include="ItemSlot.cs" />
+    <Compile Include="UICheckbox.cs" />
     <Compile Include="UIGrid.cs" />
   </ItemGroup>
   <ItemGroup>

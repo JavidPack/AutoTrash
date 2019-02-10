@@ -40,7 +40,7 @@ namespace AutoTrash
 			{
 				return true;
 			}
-			if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.AutoTrashItems.Where(x => x.type == item.type).Any())
+			if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(item))
 			{
 				autoTrashPlayer.LastAutoTrashItem = item;
 				//Main.item[j] = player.GetItem(player.whoAmI, Main.item[j], false, false);

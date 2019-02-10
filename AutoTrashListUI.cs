@@ -17,15 +17,18 @@ namespace AutoTrash
 		public UIGrid autoTrashGrid;
 		public FixedUIScrollbar autoTrashGridScrollbar;
 		float spacing = 8f;
+		UICheckbox NoValueCheckbox;
 
 		public override void OnInitialize()
 		{
+			int checkboxesHeight = 30;
+
 			mainPanel = new UIPanel();
 			mainPanel.SetPadding(0);
 			mainPanel.Left.Set(300f, 0f);
 			mainPanel.Top.Set(300f, 0f);
 			mainPanel.Width.Set(200f, 0f);
-			mainPanel.Height.Set(300f, 0f);
+			mainPanel.Height.Set(300f + checkboxesHeight, 0f);
 			mainPanel.BackgroundColor = new Color(73, 94, 171);
 			mainPanel.OnMouseDown += DragStart;
 			mainPanel.OnMouseUp += DragEnd;
@@ -48,17 +51,24 @@ namespace AutoTrash
 			autoTrashGrid.Top.Pixels = 32f + spacing;
 			autoTrashGrid.Left.Pixels = spacing;
 			autoTrashGrid.Width.Set(-25f, 1f);
-			autoTrashGrid.Height.Set(-55f, 1f);
+			autoTrashGrid.Height.Set(-55f - checkboxesHeight, 1f);
 			autoTrashGrid.ListPadding = 12f;
+			autoTrashGrid.OnScrollWheel += OnScrollWheel_FixHotbarScroll;
 			mainPanel.Append(autoTrashGrid);
 
 			autoTrashGridScrollbar = new FixedUIScrollbar();
 			autoTrashGridScrollbar.SetView(100f, 1000f);
 			autoTrashGridScrollbar.Top.Pixels = 32f + spacing;
-			autoTrashGridScrollbar.Height.Set(-50f - spacing, 1f);
+			autoTrashGridScrollbar.Height.Set(-50f - spacing - checkboxesHeight, 1f);
 			autoTrashGridScrollbar.HAlign = 1f;
 			mainPanel.Append(autoTrashGridScrollbar);
 			autoTrashGrid.SetScrollbar(autoTrashGridScrollbar);
+
+			NoValueCheckbox = new UICheckbox("No Value", "Trash all Items with No Value");
+			NoValueCheckbox.Top.Set(300, 0f);
+			NoValueCheckbox.Left.Set(12, 0f);
+			NoValueCheckbox.OnSelectedChanged += (a, b) => Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().NoValue = NoValueCheckbox.Selected;
+			mainPanel.Append(NoValueCheckbox);
 
 			Append(mainPanel);
 		}
@@ -110,6 +120,11 @@ namespace AutoTrash
 			}
 		}
 
+		internal static void OnScrollWheel_FixHotbarScroll(UIScrollWheelEvent evt, UIElement listeningElement)
+		{
+			Main.LocalPlayer.ScrollHotbar(Terraria.GameInput.PlayerInput.ScrollWheelDelta / 120);
+		}
+
 		internal void UpdateNeeded()
 		{
 			updateneeded = true;
@@ -122,7 +137,7 @@ namespace AutoTrash
 			updateneeded = false;
 			autoTrashGrid.Clear();
 
-			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>(AutoTrash.instance);
+			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 
 			foreach (var item in autoTrashPlayer.AutoTrashItems)
 			{
@@ -136,6 +151,8 @@ namespace AutoTrash
 			}
 			autoTrashGrid.UpdateOrder();
 			autoTrashGrid._innerList.Recalculate();
+
+			NoValueCheckbox.Selected = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().NoValue;
 		}
 	}
 

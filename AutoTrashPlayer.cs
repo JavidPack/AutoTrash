@@ -15,27 +15,33 @@ namespace AutoTrash
 		public List<Item> AutoTrashItems;
 		public Item LastAutoTrashItem;
 
+		public bool NoValue;
+		internal bool NoValueBelongs(Item item) => item.value == 0;
+
 		public override void Initialize()
 		{
 			AutoTrashItems = new List<Item>();
 			LastAutoTrashItem = new Item();
 			LastAutoTrashItem.SetDefaults(0, true);
 			AutoTrashEnabled = false;
+			NoValue = false;
 		}
 
 		public override TagCompound Save()
 		{
 			return new TagCompound
 			{
-				["AutoTrashItems"] = AutoTrashItems.Select(ItemIO.Save).ToList(),
-				["AutoTrashEnabled"] = AutoTrashEnabled
+				["AutoTrashItems"] = AutoTrashItems,
+				["AutoTrashEnabled"] = AutoTrashEnabled,
+				[nameof(NoValue)] = NoValue,
 			};
 		}
 
 		public override void Load(TagCompound tag)
 		{
-			AutoTrashItems = tag.GetList<TagCompound>("AutoTrashItems").Select(ItemIO.Load).ToList();
+			AutoTrashItems = tag.Get<List<Item>>("AutoTrashItems");
 			AutoTrashEnabled = tag.GetBool("AutoTrashEnabled");
+			NoValue = tag.GetBool(nameof(NoValue));
 
 			AutoTrash.instance.autoTrashListUI?.UpdateNeeded();
 		}
@@ -43,6 +49,11 @@ namespace AutoTrash
 		internal static bool IsModItem(Item item)
 		{
 			return item.type >= ItemID.Count;
+		}
+
+		internal bool ShouldItemBeTrashed(Item item)
+		{
+			return AutoTrashItems.Where(x => x.type == item.type).Any() || (NoValue && NoValueBelongs(item));
 		}
 
 		public override bool ShiftClickSlot(Item[] inventory, int context, int slot)
@@ -77,7 +88,7 @@ namespace AutoTrash
 			// Fishing uses player.GetItem bypassing AutoTrash.
 			if (Main.myPlayer == player.whoAmI)
 			{
-				if(caughtFish > 0 && AutoTrashItems.Where(x => x.type == caughtFish).Any())
+				if(caughtFish > 0 && AutoTrashItems.Where(x => x.type == caughtFish).Any()) // type vs Item filter?
 				{
 					for (int i = 0; i < 59; i++)
 					{

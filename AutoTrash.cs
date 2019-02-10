@@ -44,6 +44,9 @@ namespace AutoTrash
 				autoTrashListUI.Activate();
 				autoTrashUserInterface = new UserInterface();
 				autoTrashUserInterface.SetState(autoTrashListUI);
+
+				UICheckbox.checkboxTexture = GetTexture("checkBox");
+				UICheckbox.checkmarkTexture = GetTexture("checkMark");
 			}
 		}
 
@@ -51,6 +54,9 @@ namespace AutoTrash
 		{
 			instance = null;
 			autoTrashUserInterface = null;
+
+			UICheckbox.checkboxTexture = null;
+			UICheckbox.checkmarkTexture = null;
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -111,7 +117,7 @@ namespace AutoTrash
 				if (RecipeBrowser != null)
 				{
 					RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"),
-						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().AutoTrashItems.Any(x => x.type == item.type)));
+						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
 				}
 			}
 		}
