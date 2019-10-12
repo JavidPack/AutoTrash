@@ -30,7 +30,7 @@ namespace AutoTrash
 
 		public override bool OnPickup(Item item, Player player)
 		{
-			var autoTrashPlayer = player.GetModPlayer<AutoTrashPlayer>(mod);
+			var autoTrashPlayer = player.GetModPlayer<AutoTrashPlayer>();
 			//Main.NewText("ItemID: " + item.type);
 			//foreach (var autoItme in autoTrashPlayer.AutoTrashItems)
 			//{
@@ -62,6 +62,9 @@ namespace AutoTrash
 
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
+
+				var config = mod.GetConfig<AutoTrashClientConfig>();
+
 				int xPosition = 448;
 				int yPosition = Main.instance.invBottom;
 				if ((Main.LocalPlayer.chest != -1 && !Main.recBigList) || Main.npcShop > 0)
@@ -72,7 +75,10 @@ namespace AutoTrash
 				}
 				xPosition -= (int)(56 * Main.inventoryScale);
 
-				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>(mod);
+				xPosition += (int)((config.SlotPositionX - 8) * (56 * Main.inventoryScale));
+				yPosition += (int)((config.SlotPositionY - 5) * (56 * Main.inventoryScale));
+
+				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 				// Toggle Button
 				Texture2D inventoryTickTexture = Main.inventoryTickOnTexture;
 				if (!autoTrashPlayer.AutoTrashEnabled)
