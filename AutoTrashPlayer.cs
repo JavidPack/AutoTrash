@@ -82,26 +82,28 @@ namespace AutoTrash
 			return false; // do default behavior.
 		}
 
-		public static int caughtFish;
+		public static HashSet<int> caughtFish = new HashSet<int>();
 		public override void PreUpdate()
 		{
 			// Fishing uses player.GetItem bypassing AutoTrash.
 			if (Main.myPlayer == player.whoAmI)
 			{
-				if(caughtFish > 0 && AutoTrashItems.Where(x => x.type == caughtFish).Any()) // type vs Item filter?
+				if(caughtFish.Count > 0) // type vs Item filter?
 				{
+					var toDelete = AutoTrashItems.Select(x => x.type).Intersect(caughtFish);
 					for (int i = 0; i < 59; i++)
 					{
-						if (!player.inventory[i].IsAir && player.inventory[i].type == caughtFish)
+						Item item = player.inventory[i];
+						if (!item.IsAir && item.newAndShiny && toDelete.Contains(item.type))
 						{
 							// TODO: Analyze performance impact? do every 60 frames only?
-							LastAutoTrashItem = player.inventory[i].Clone();
-							player.inventory[i].TurnToAir();
-							break;
+							LastAutoTrashItem = item.Clone();
+							item.TurnToAir();
+							// break; Multi-lure catches multiple items in 1 tick
 						}
 					}
+					caughtFish.Clear();
 				}
-				caughtFish = 0;
 			}
 		}
 	}

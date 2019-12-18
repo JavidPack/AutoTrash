@@ -51,7 +51,7 @@ namespace AutoTrash
 
 		public override void CaughtFishStack(int type, ref int stack)
 		{
-			AutoTrashPlayer.caughtFish = type;
+			AutoTrashPlayer.caughtFish.Add(type);
 		}
 
 		internal void DrawUpdateAutoTrash()
@@ -63,7 +63,7 @@ namespace AutoTrash
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
 
-				var config = mod.GetConfig<AutoTrashClientConfig>();
+				var config = ModContent.GetInstance<AutoTrashClientConfig>();
 
 				int xPosition = 448;
 				int yPosition = Main.instance.invBottom;
