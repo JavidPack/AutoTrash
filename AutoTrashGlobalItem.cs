@@ -30,13 +30,14 @@ namespace AutoTrash
 
 		public override bool OnPickup(Item item, Player player)
 		{
+			// TODO: IL edit maybe
 			var autoTrashPlayer = player.GetModPlayer<AutoTrashPlayer>();
 			//Main.NewText("ItemID: " + item.type);
 			//foreach (var autoItme in autoTrashPlayer.AutoTrashItems)
 			//{
 			//	Main.NewText("Auto: " + autoItme.type);
 			//}
-			if (AutoTrashPlayer.IsModItem(item) && item.modItem.mod.Name == "ModLoader")
+			if (AutoTrashPlayer.IsModItem(item) && item.modItem.Name == "MysteryItem")
 			{
 				return true;
 			}

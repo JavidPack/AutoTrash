@@ -1,5 +1,5 @@
 ﻿author = jopojelly
-version = 0.4.2
+version = 0.4.3
 displayName = Auto Trash
 homepage = https://forums.terraria.org/index.php?threads/auto-trash.53592/
 buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*

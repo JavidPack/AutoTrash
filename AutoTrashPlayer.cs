@@ -16,7 +16,8 @@ namespace AutoTrash
 		public Item LastAutoTrashItem;
 
 		public bool NoValue;
-		internal bool NoValueBelongs(Item item) => item.value == 0;
+		internal bool NoValueBelongs(Item item) => item.value == 0 && !ItemID.Sets.NebulaPickup[item.type] && !heartsAndMana.Contains(item.type);
+		internal static int[] heartsAndMana = new int[] { 58, 1734, 1867, 184 , 1735 , 1868 };
 
 		public override void Initialize()
 		{
