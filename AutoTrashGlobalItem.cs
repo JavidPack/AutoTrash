@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -43,6 +44,23 @@ namespace AutoTrash
 			}
 			if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(item))
 			{
+				var config = ModContent.GetInstance<AutoTrashClientConfig>();
+				if (config.SellInstead && item.value > 0)
+				{
+					var sellVal = config.SellValue >= 1 ? config.SellValue : 1;
+					var value = Math.Floor((double) (item.value * item.stack / sellVal));
+
+					var plat = Math.Floor(value / Item.platinum);
+					var gold = Math.Floor((value - (plat * Item.platinum)) / Item.gold);
+					var silver = Math.Floor((value - (plat * Item.platinum) - (gold * Item.gold)) / Item.silver);
+					var copper = Math.Floor(value - (plat * Item.platinum) - (gold * Item.gold) - (silver * Item.silver));
+					
+					if (plat > 0) player.QuickSpawnItem(ItemID.PlatinumCoin, (int) plat);
+					if (gold > 0) player.QuickSpawnItem(ItemID.GoldCoin, (int) gold);
+					if (silver > 0) player.QuickSpawnItem(ItemID.SilverCoin, (int) silver);
+					if (copper > 0) player.QuickSpawnItem(ItemID.CopperCoin, (int) copper);
+				}
+				
 				autoTrashPlayer.LastAutoTrashItem = item;
 				//Main.item[j] = player.GetItem(player.whoAmI, Main.item[j], false, false);
 				return false;
@@ -183,12 +201,14 @@ namespace AutoTrash
 						//}
 						//else
 						//{
-						Main.hoverItemName = singleSlotArray[0].type != 0 ? "Click to remove from Auto-Trash list" : "Place item to add to Auto-Trash list";
+						Main.hoverItemName = singleSlotArray[0].type != 0 
+							? (config.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list") 
+							: (config.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
 						//}
 					}
 					else
 					{
-						Main.hoverItemName = "Enable Auto-Trash to automatically trash items on pickup";
+						Main.hoverItemName = (config.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
 					}
 				}
 				singleSlotArray[0].newAndShiny = false;
@@ -196,7 +216,12 @@ namespace AutoTrash
 				{
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
-				else
+				else if (config.SellInstead)
+				{
+					Main.spriteBatch.Draw(ModContent.GetTexture("AutoTrash/AutoSellInvSlot"), new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.InventoryItem, 0, new Vector2(xPosition, yPosition));
+				} 
+				else 
 				{
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
@@ -208,17 +233,19 @@ namespace AutoTrash
 				if (enableButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled ? "Auto-Trash Enabled: " + autoTrashPlayer.AutoTrashItems.Count + " items" : "Auto-Trash Disabled";
+					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled 
+						? (config.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items" 
+						: (config.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
 				}
 				if (clearButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = "Hold Alt and Click to Clear Auto-Trash list";
+					Main.hoverItemName = (config.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
 				}
 				if (listButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = "Click to View Auto-Trash list";
+					Main.hoverItemName = (config.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
 				}
 
 				Main.inventoryScale = 0.85f;
