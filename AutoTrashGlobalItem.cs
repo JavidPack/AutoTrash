@@ -44,24 +44,8 @@ namespace AutoTrash
 			}
 			if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(item))
 			{
-				var config = ModContent.GetInstance<AutoTrashClientConfig>();
-				if (config.SellInstead && item.value > 0)
-				{
-					var sellVal = config.SellValue >= 1 ? config.SellValue : 1;
-					var value = Math.Floor((double) (item.value * item.stack / sellVal));
-
-					var plat = Math.Floor(value / Item.platinum);
-					var gold = Math.Floor((value - (plat * Item.platinum)) / Item.gold);
-					var silver = Math.Floor((value - (plat * Item.platinum) - (gold * Item.gold)) / Item.silver);
-					var copper = Math.Floor(value - (plat * Item.platinum) - (gold * Item.gold) - (silver * Item.silver));
-					
-					if (plat > 0) player.QuickSpawnItem(ItemID.PlatinumCoin, (int) plat);
-					if (gold > 0) player.QuickSpawnItem(ItemID.GoldCoin, (int) gold);
-					if (silver > 0) player.QuickSpawnItem(ItemID.SilverCoin, (int) silver);
-					if (copper > 0) player.QuickSpawnItem(ItemID.CopperCoin, (int) copper);
-				}
-				
 				autoTrashPlayer.LastAutoTrashItem = item;
+				autoTrashPlayer.OnItemAutotrashed();
 				//Main.item[j] = player.GetItem(player.whoAmI, Main.item[j], false, false);
 				return false;
 			}
@@ -172,7 +156,17 @@ namespace AutoTrash
 					if (Main.mouseLeftRelease && Main.mouseLeft && autoTrashPlayer.AutoTrashEnabled)
 					{
 						int originalID = singleSlotArray[0].type;
-						Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
+
+						if (config.SellInstead) {
+							float sellPercent = (config.SellValue >= 1 ? config.SellValue : 1) / 100f;
+							var value = (int)Math.Floor(singleSlotArray[0].value * singleSlotArray[0].stack * sellPercent);
+							if (!Main.mouseItem.IsAir || Main.LocalPlayer.BuyItem(value))
+								Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
+							else
+								Main.NewText("Not enough money to reclaim Auto-Sell item");
+						}
+						else
+							Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
 						Recipe.FindRecipes();
 						int newID = singleSlotArray[0].type;
 						// Add 
@@ -219,13 +213,16 @@ namespace AutoTrash
 				else if (config.SellInstead)
 				{
 					Main.spriteBatch.Draw(ModContent.GetTexture("AutoTrash/AutoSellInvSlot"), new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
-					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.InventoryItem, 0, new Vector2(xPosition, yPosition));
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ShopItem, 0, new Vector2(xPosition, yPosition));
 				} 
 				else 
 				{
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
+				bool itemChanged = autoTrashPlayer.LastAutoTrashItem != singleSlotArray[0];
 				autoTrashPlayer.LastAutoTrashItem = singleSlotArray[0];
+				if(itemChanged)
+					autoTrashPlayer.OnItemAutotrashed();
 				// want 0.7f??
 				Main.spriteBatch.Draw(inventoryTickTexture, enableButtonRectangle.TopLeft(), Color.White * 0.7f);
 				Main.spriteBatch.Draw(Main.instance.infoIconTexture[5], listButtonRectangle.TopLeft(), Color.White * 0.7f);
