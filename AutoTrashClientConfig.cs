@@ -19,5 +19,16 @@ namespace AutoTrash
 		[Tooltip("Customize the position of the AutoTrash slot measured top to bottom from the top hotbar")]
 		[Range(0, 10)]
 		public int SlotPositionY;
+		
+		[DefaultValue(false)]
+		[Label("Sell items instead")]
+		[Tooltip("Will sell items on pickup instead of trashing them")]
+		public bool SellInstead { get; set; }
+		
+		[DefaultValue(15)]
+		[Label("AutoSell % sell value")]
+		[Tooltip("Customize the sell value of a item, default merchant sell value is 20%, mod's default sell value is ~15%")]
+		[Range(1, 100)]
+		public int SellValue;
 	}
 }

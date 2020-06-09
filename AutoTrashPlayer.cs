@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace AutoTrash
 {
@@ -63,15 +64,18 @@ namespace AutoTrash
 			{
 				if (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl))
 				{
-					if (AutoTrashEnabled && !AutoTrashItems.Any(x => x.type == inventory[slot].type))
+					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead))
 					{
 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
 
-						Item newItem = new Item();
-						newItem.SetDefaults(inventory[slot].type);
-						AutoTrashItems.Add(newItem);
+						if (!AutoTrashItems.Any(x => x.type == inventory[slot].type)) {
+							Item newItem = new Item();
+							newItem.SetDefaults(inventory[slot].type);
+							AutoTrashItems.Add(newItem);
+						}
 
 						LastAutoTrashItem = inventory[slot].Clone();
+						OnItemAutotrashed();
 
 						inventory[slot].SetDefaults();
 
@@ -99,12 +103,31 @@ namespace AutoTrash
 						{
 							// TODO: Analyze performance impact? do every 60 frames only?
 							LastAutoTrashItem = item.Clone();
+							OnItemAutotrashed();
 							item.TurnToAir();
 							// break; Multi-lure catches multiple items in 1 tick
 						}
 					}
 					caughtFish.Clear();
 				}
+			}
+		}
+
+		public void OnItemAutotrashed() {
+			var config = ModContent.GetInstance<AutoTrashClientConfig>();
+			if (config.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
+				float sellPercent = (config.SellValue >= 1 ? config.SellValue : 1) / 100f;
+				var value = Math.Floor((double)(LastAutoTrashItem.value * LastAutoTrashItem.stack * sellPercent));
+
+				var plat = Math.Floor(value / Item.platinum);
+				var gold = Math.Floor((value - (plat * Item.platinum)) / Item.gold);
+				var silver = Math.Floor((value - (plat * Item.platinum) - (gold * Item.gold)) / Item.silver);
+				var copper = Math.Floor(value - (plat * Item.platinum) - (gold * Item.gold) - (silver * Item.silver));
+
+				if (plat > 0) player.QuickSpawnItem(ItemID.PlatinumCoin, (int)plat);
+				if (gold > 0) player.QuickSpawnItem(ItemID.GoldCoin, (int)gold);
+				if (silver > 0) player.QuickSpawnItem(ItemID.SilverCoin, (int)silver);
+				if (copper > 0) player.QuickSpawnItem(ItemID.CopperCoin, (int)copper);
 			}
 		}
 	}
