@@ -2,3 +2,5 @@
 Place items in the Auto-Trash slot to immediately trash them as they are picked up later. Useful for all those items that clutter your inventory. 
 
 Ctrl+Shift click inventory items to quickly add to auto trash list.
+
+You can also use the config to have the Auto-Trash slot instead act as an Auto-Sell slot. In Auto-Sell mode, you automatically get coins when items are auto-trashed. The default is 15%, slightly less than the 20% you would get from shops.
