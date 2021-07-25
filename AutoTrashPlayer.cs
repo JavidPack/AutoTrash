@@ -66,7 +66,7 @@ namespace AutoTrash
 				{
 					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead))
 					{
-						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+						Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0f);
 
 						if (!AutoTrashItems.Any(x => x.type == inventory[slot].type)) {
 							Item newItem = new Item();
@@ -114,9 +114,11 @@ namespace AutoTrash
 		}
 
 		public void OnItemAutotrashed() {
-			var config = ModContent.GetInstance<AutoTrashClientConfig>();
-			if (config.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
-				float sellPercent = (config.SellValue >= 1 ? config.SellValue : 1) / 100f;
+			var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
+			var serverconfig = ModContent.GetInstance<AutoTrashServerConfig>();
+
+			if (clientconfig.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
+				float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
 				var value = Math.Floor((double)(LastAutoTrashItem.value * LastAutoTrashItem.stack * sellPercent));
 
 				var plat = Math.Floor(value / Item.platinum);

@@ -22,7 +22,7 @@ namespace AutoTrash
 
 		public override bool Autoload(ref string name)
 		{
-			if (Main.netMode != 2)
+			if (Main.netMode != NetmodeID.Server)
 			{
 				clearTexture = mod.GetTexture("closeButton");
 			}
@@ -66,7 +66,8 @@ namespace AutoTrash
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
 
-				var config = ModContent.GetInstance<AutoTrashClientConfig>();
+                var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
+				var serverconfig = ModContent.GetInstance<AutoTrashServerConfig>();
 
 				int xPosition = 448;
 				int yPosition = Main.instance.invBottom;
@@ -78,8 +79,8 @@ namespace AutoTrash
 				}
 				xPosition -= (int)(56 * Main.inventoryScale);
 
-				xPosition += (int)((config.SlotPositionX - 8) * (56 * Main.inventoryScale));
-				yPosition += (int)((config.SlotPositionY - 5) * (56 * Main.inventoryScale));
+				xPosition += (int)((clientconfig.SlotPositionX - 8) * (56 * Main.inventoryScale));
+				yPosition += (int)((clientconfig.SlotPositionY - 5) * (56 * Main.inventoryScale));
 
 				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 				// Toggle Button
@@ -106,7 +107,7 @@ namespace AutoTrash
 
 						Main.mouseLeftRelease = false;
 						Main.PlaySound(SoundID.MenuTick);
-						if (Main.netMode == 1)
+						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{
 							//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
 						}
@@ -136,7 +137,7 @@ namespace AutoTrash
 							Main.mouseLeftRelease = false; // needed?
 							Main.PlaySound(SoundID.MenuTick);
 							autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
-							if (Main.netMode == 1)
+							if (Main.netMode == NetmodeID.MultiplayerClient)
 							{
 								//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
 							}
@@ -157,8 +158,8 @@ namespace AutoTrash
 					{
 						int originalID = singleSlotArray[0].type;
 
-						if (config.SellInstead) {
-							float sellPercent = (config.SellValue >= 1 ? config.SellValue : 1) / 100f;
+						if (clientconfig.SellInstead) {
+							float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
 							var value = (int)Math.Floor(singleSlotArray[0].value * singleSlotArray[0].stack * sellPercent);
 							if (!Main.mouseItem.IsAir || Main.LocalPlayer.BuyItem(value))
 								Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
@@ -195,14 +196,14 @@ namespace AutoTrash
 						//}
 						//else
 						//{
-						Main.hoverItemName = singleSlotArray[0].type != 0 
-							? (config.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list") 
-							: (config.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
+						Main.hoverItemName = singleSlotArray[0].type != ItemID.None 
+							? (clientconfig.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list") 
+							: (clientconfig.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
 						//}
 					}
 					else
 					{
-						Main.hoverItemName = (config.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
+						Main.hoverItemName = (clientconfig.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
 					}
 				}
 				singleSlotArray[0].newAndShiny = false;
@@ -210,7 +211,7 @@ namespace AutoTrash
 				{
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
-				else if (config.SellInstead)
+				else if (clientconfig.SellInstead)
 				{
 					Main.spriteBatch.Draw(ModContent.GetTexture("AutoTrash/AutoSellInvSlot"), new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ShopItem, 0, new Vector2(xPosition, yPosition));
@@ -231,18 +232,18 @@ namespace AutoTrash
 				{
 					Main.HoverItem = new Item();
 					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled 
-						? (config.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items" 
-						: (config.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
+						? (clientconfig.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items" 
+						: (clientconfig.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
 				}
 				if (clearButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (config.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
+					Main.hoverItemName = (clientconfig.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
 				}
 				if (listButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (config.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
+					Main.hoverItemName = (clientconfig.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
 				}
 
 				Main.inventoryScale = 0.85f;
