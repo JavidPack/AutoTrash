@@ -7,13 +7,19 @@ on:
 jobs:
   automaticpublish:
     name: Automatic Mod Browser Publish Integration
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
        
       # Mod Browser integration
-      - uses: JavidPack/tModLoaderPublishIntegration@v0.11.7.6.Beta.3
+      - uses: JavidPack/tModLoaderPublishIntegration@v0.11.8.3
         with:
           STEAMID64: ${{secrets.STEAMID64}}
           MODBROWSERPASSPHRASE: ${{secrets.MODBROWSERPASSPHRASE}}
           MODNAME: AutoTrash
+        
+      # Upload artifact for all builds
+      - uses: actions/upload-artifact@v2
+        with:
+          name: .tmod file
+          path: ~/tModLoader/ModLoader/Mods/AutoTrash.tmod

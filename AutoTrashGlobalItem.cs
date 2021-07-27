@@ -66,7 +66,7 @@ namespace AutoTrash
 				// Calculate Position of ItemSlot
 				Main.inventoryScale = 0.85f;
 
-                var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
+				var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
 				var serverconfig = ModContent.GetInstance<AutoTrashServerConfig>();
 
 				int xPosition = 448;
