@@ -3,14 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.UI;
 using Terraria;
+using ReLogic.Content;
 
 namespace AutoTrash
 {
 	internal class ItemSlot : UIElement
 	{
-		public static Texture2D backgroundTexture = Main.inventoryBack9Texture;
+		public static Texture2D backgroundTexture = Terraria.GameContent.TextureAssets.InventoryBack9.Value;
 
-		private Texture2D _texture;
+		private Asset<Texture2D> _texture;
 		//	private float _visibilityActive = 1f;
 		//		private float _visibilityInactive = 0.4f;
 		private float scale = 0.6f;
@@ -19,7 +20,7 @@ namespace AutoTrash
 
 		public ItemSlot(int id)
 		{
-			this._texture = Main.itemTexture[id];
+			this._texture = Terraria.GameContent.TextureAssets.Item[id];
 			this.id = id;
 			this.item = new Item();
 			item.SetDefaults(id);
@@ -41,10 +42,11 @@ namespace AutoTrash
 
 			spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 			//Texture2D texture2D = Main.itemTexture[this.item.type];
+			//Main.instance.LoadItem(item.type);
 			Rectangle rectangle2;
 			if (Main.itemAnimations[id] != null)
 			{
-				rectangle2 = Main.itemAnimations[id].GetFrame(_texture);
+				rectangle2 = Main.itemAnimations[id].GetFrame(_texture.Value);
 			}
 			else
 			{
@@ -71,10 +73,10 @@ namespace AutoTrash
 			Color alphaColor = item.GetAlpha(Color.White);
 			Color colorColor = item.GetColor(Color.White);
 			//spriteBatch.Draw(_texture, drawPosition, new Rectangle?(rectangle2), this.item.GetAlpha(Color.White), 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
-			spriteBatch.Draw(_texture, drawPosition, new Rectangle?(rectangle2), alphaColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
+			spriteBatch.Draw(_texture.Value, drawPosition, new Rectangle?(rectangle2), alphaColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
 			if (this.item.color != Color.Transparent)
 			{
-				spriteBatch.Draw(_texture, drawPosition, new Rectangle?(rectangle2), colorColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
+				spriteBatch.Draw(_texture.Value, drawPosition, new Rectangle?(rectangle2), colorColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
 			}
 			//if (this.item.stack > 1)
 			//{

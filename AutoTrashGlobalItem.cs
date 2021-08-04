@@ -7,26 +7,22 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.ID;
 using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 
 namespace AutoTrash
 {
 	class AutoTrashGlobalItem : GlobalItem
 	{
 		private static Item[] singleSlotArray;
-		private static Texture2D clearTexture;
+		private static Asset<Texture2D> clearTexture;
 
 		public AutoTrashGlobalItem()
 		{
 			singleSlotArray = new Item[1];
-		}
-
-		public override bool Autoload(ref string name)
-		{
 			if (Main.netMode != NetmodeID.Server)
 			{
-				clearTexture = mod.GetTexture("closeButton");
+				clearTexture = ModContent.Request<Texture2D>("AutoTrash/closeButton");
 			}
-			return base.Autoload(ref name);
 		}
 
 		public override bool OnPickup(Item item, Player player)
@@ -38,7 +34,7 @@ namespace AutoTrash
 			//{
 			//	Main.NewText("Auto: " + autoItme.type);
 			//}
-			if (AutoTrashPlayer.IsModItem(item) && item.modItem.Name == "MysteryItem")
+			if (AutoTrashPlayer.IsModItem(item) && item.ModItem.Name == "MysteryItem")
 			{
 				return true;
 			}
@@ -84,12 +80,12 @@ namespace AutoTrash
 
 				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 				// Toggle Button
-				Texture2D inventoryTickTexture = Main.inventoryTickOnTexture;
+				Texture2D inventoryTickTexture = Terraria.GameContent.TextureAssets.InventoryTickOn.Value;
 				if (!autoTrashPlayer.AutoTrashEnabled)
 				{
-					inventoryTickTexture = Main.inventoryTickOffTexture;
+					inventoryTickTexture = Terraria.GameContent.TextureAssets.InventoryTickOff.Value;
 				}
-				Rectangle slotRectangle = new Rectangle(xPosition, yPosition, (int)((float)Main.inventoryBackTexture.Width * Main.inventoryScale), (int)((float)Main.inventoryBackTexture.Height * Main.inventoryScale));
+				Rectangle slotRectangle = new Rectangle(xPosition, yPosition, (int)((float)Terraria.GameContent.TextureAssets.InventoryBack.Value.Width * Main.inventoryScale), (int)((float)Terraria.GameContent.TextureAssets.InventoryBack.Value.Height * Main.inventoryScale));
 				Rectangle enableButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale), slotRectangle.Top - 2, inventoryTickTexture.Width, inventoryTickTexture.Height);
 				Rectangle listButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale) + 1, slotRectangle.Top + 13, inventoryTickTexture.Width, inventoryTickTexture.Height);
 				Rectangle clearButtonRectangle = new Rectangle(slotRectangle.Left + (int)(40 * Main.inventoryScale), slotRectangle.Bottom - 9, inventoryTickTexture.Width, inventoryTickTexture.Height);
@@ -106,7 +102,7 @@ namespace AutoTrash
 						autoTrashPlayer.AutoTrashEnabled = !autoTrashPlayer.AutoTrashEnabled;
 
 						Main.mouseLeftRelease = false;
-						Main.PlaySound(SoundID.MenuTick);
+						Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
 						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{
 							//NetMessage.SendData(4, -1, -1, Main.LocalPlayer.name, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
@@ -121,7 +117,7 @@ namespace AutoTrash
 					{
 						AutoTrash.instance.autoTrashListUI.UpdateNeeded();
 						AutoTrashListUI.visible = !AutoTrashListUI.visible;
-						Main.PlaySound(AutoTrashListUI.visible ? SoundID.MenuOpen : SoundID.MenuClose);
+						Terraria.Audio.SoundEngine.PlaySound(AutoTrashListUI.visible ? SoundID.MenuOpen : SoundID.MenuClose);
 					}
 				}
 				if (clearButtonRectangle.Contains(mousePoint))
@@ -135,7 +131,7 @@ namespace AutoTrash
 							autoTrashPlayer.AutoTrashItems.Clear();
 							AutoTrash.instance.autoTrashListUI.UpdateNeeded();
 							Main.mouseLeftRelease = false; // needed?
-							Main.PlaySound(SoundID.MenuTick);
+							Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
 							autoTrashPlayer.LastAutoTrashItem.SetDefaults(0);
 							if (Main.netMode == NetmodeID.MultiplayerClient)
 							{
@@ -213,7 +209,7 @@ namespace AutoTrash
 				}
 				else if (clientconfig.SellInstead)
 				{
-					Main.spriteBatch.Draw(ModContent.GetTexture("AutoTrash/AutoSellInvSlot"), new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
+					Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AutoTrash/AutoSellInvSlot").Value, new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ShopItem, 0, new Vector2(xPosition, yPosition));
 				} 
 				else 
@@ -226,8 +222,8 @@ namespace AutoTrash
 					autoTrashPlayer.OnItemAutotrashed();
 				// want 0.7f??
 				Main.spriteBatch.Draw(inventoryTickTexture, enableButtonRectangle.TopLeft(), Color.White * 0.7f);
-				Main.spriteBatch.Draw(Main.instance.infoIconTexture[5], listButtonRectangle.TopLeft(), Color.White * 0.7f);
-				Main.spriteBatch.Draw(clearTexture, clearButtonRectangle.TopLeft(), Color.White * 0.7f);
+				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.InfoIcon[5].Value, listButtonRectangle.TopLeft(), Color.White * 0.7f);
+				Main.spriteBatch.Draw(clearTexture.Value, clearButtonRectangle.TopLeft(), Color.White * 0.7f);
 				if (enableButtonHover)
 				{
 					Main.HoverItem = new Item();

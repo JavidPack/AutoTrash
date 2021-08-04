@@ -6,6 +6,8 @@ using Terraria;
 using Terraria.UI;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using ReLogic.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AutoTrash
 {
@@ -13,7 +15,7 @@ namespace AutoTrash
 	{
 		// TODO: Pre-designed trash items sets. Sorting arrays?
 		internal static AutoTrash instance;
-		internal AutoTrashGlobalItem autoTrashGlobalItem;
+		//internal AutoTrashGlobalItem autoTrashGlobalItem;
 		internal static UserInterface autoTrashUserInterface;
 		internal AutoTrashListUI autoTrashListUI;
 
@@ -37,7 +39,7 @@ namespace AutoTrash
 				throw new Exception("Please update CheatSheet to the latest version to use alongside AutoTrash");
 			}
 			instance = this;
-			autoTrashGlobalItem = (AutoTrashGlobalItem)GetGlobalItem("AutoTrashGlobalItem");
+			//autoTrashGlobalItem = (AutoTrashGlobalItem)GetGlobalItem("AutoTrashGlobalItem");
 			if (!Main.dedServ)
 			{
 				autoTrashListUI = new AutoTrashListUI();
@@ -45,8 +47,8 @@ namespace AutoTrash
 				autoTrashUserInterface = new UserInterface();
 				autoTrashUserInterface.SetState(autoTrashListUI);
 
-				UICheckbox.checkboxTexture = GetTexture("checkBox");
-				UICheckbox.checkmarkTexture = GetTexture("checkMark");
+				UICheckbox.checkboxTexture = Assets.Request<Texture2D>("checkBox", AssetRequestMode.ImmediateLoad);
+				UICheckbox.checkmarkTexture = Assets.Request<Texture2D>("checkMark", AssetRequestMode.ImmediateLoad);
 			}
 		}
 
@@ -59,6 +61,24 @@ namespace AutoTrash
 			UICheckbox.checkmarkTexture = null;
 		}
 
+		public override void PostSetupContent()
+		{
+			/*
+			if (!Main.dedServ)
+			{
+				Mod RecipeBrowser = ModLoader.GetMod("RecipeBrowser");
+				if (RecipeBrowser != null)
+				{
+					RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"),
+						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
+				}
+			}
+			*/
+		}
+	}
+
+	internal class AutoTrashSystem : ModSystem
+    {
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int inventoryLayerIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -68,7 +88,7 @@ namespace AutoTrash
 					"AutoTrash: Auto Trash Slot",
 					delegate
 					{
-						autoTrashGlobalItem.DrawUpdateAutoTrash();
+					 	ModContent.GetInstance<AutoTrashGlobalItem>().DrawUpdateAutoTrash();
 						return true;
 					},
 					InterfaceScaleType.UI)
@@ -99,26 +119,13 @@ namespace AutoTrash
 					{
 						if (AutoTrashListUI.visible)
 						{
-							autoTrashUserInterface.Update(Main._drawInterfaceGameTime);
-							autoTrashListUI.Draw(Main.spriteBatch);
+							AutoTrash.autoTrashUserInterface.Update(Main._drawInterfaceGameTime);
+							ModContent.GetInstance<AutoTrash>().autoTrashListUI.Draw(Main.spriteBatch);
 						}
 						return true;
 					},
 					InterfaceScaleType.UI)
 				);
-			}
-		}
-
-		public override void PostSetupContent()
-		{
-			if (!Main.dedServ)
-			{
-				Mod RecipeBrowser = ModLoader.GetMod("RecipeBrowser");
-				if (RecipeBrowser != null)
-				{
-					RecipeBrowser.Call("AddItemFilter", "Not Auto Trashed", "Weapons", GetTexture("RecipeBrowserFilterNotAutotrashedIcon"),
-						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
-				}
 			}
 		}
 	}

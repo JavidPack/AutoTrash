@@ -7,6 +7,7 @@ using Terraria.UI;
 using System;
 using Terraria.ID;
 using System.Linq;
+using ReLogic.Content;
 
 namespace AutoTrash
 {
@@ -33,7 +34,7 @@ namespace AutoTrash
 			mainPanel.OnMouseDown += DragStart;
 			mainPanel.OnMouseUp += DragEnd;
 
-			Texture2D closeTexture = AutoTrash.instance.GetTexture("closeButton");
+			Asset<Texture2D> closeTexture = AutoTrash.instance.Assets.Request<Texture2D>("closeButton");
 			UIImageButton closeButton = new UIImageButton(closeTexture);
 			closeButton.Left.Set(-32, 1f);
 			closeButton.Top.Set(10, 0f);
@@ -75,7 +76,7 @@ namespace AutoTrash
 
 		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(SoundID.MenuClose);
+			Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuClose);
 			visible = false;
 		}
 

@@ -66,7 +66,7 @@ namespace AutoTrash
 				{
 					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead))
 					{
-						Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0f);
+						Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0f);
 
 						if (!AutoTrashItems.Any(x => x.type == inventory[slot].type)) {
 							Item newItem = new Item();
@@ -91,14 +91,14 @@ namespace AutoTrash
 		public override void PreUpdate()
 		{
 			// Fishing uses player.GetItem bypassing AutoTrash.
-			if (Main.myPlayer == player.whoAmI)
+			if (Main.myPlayer == Player.whoAmI)
 			{
 				if(caughtFish.Count > 0) // type vs Item filter?
 				{
 					var toDelete = AutoTrashItems.Select(x => x.type).Intersect(caughtFish);
 					for (int i = 0; i < 59; i++)
 					{
-						Item item = player.inventory[i];
+						Item item = Player.inventory[i];
 						if (!item.IsAir && item.newAndShiny && toDelete.Contains(item.type))
 						{
 							// TODO: Analyze performance impact? do every 60 frames only?
@@ -126,10 +126,10 @@ namespace AutoTrash
 				var silver = Math.Floor((value - (plat * Item.platinum) - (gold * Item.gold)) / Item.silver);
 				var copper = Math.Floor(value - (plat * Item.platinum) - (gold * Item.gold) - (silver * Item.silver));
 
-				if (plat > 0) player.QuickSpawnItem(ItemID.PlatinumCoin, (int)plat);
-				if (gold > 0) player.QuickSpawnItem(ItemID.GoldCoin, (int)gold);
-				if (silver > 0) player.QuickSpawnItem(ItemID.SilverCoin, (int)silver);
-				if (copper > 0) player.QuickSpawnItem(ItemID.CopperCoin, (int)copper);
+				if (plat > 0) Player.QuickSpawnItem(ItemID.PlatinumCoin, (int)plat);
+				if (gold > 0) Player.QuickSpawnItem(ItemID.GoldCoin, (int)gold);
+				if (silver > 0) Player.QuickSpawnItem(ItemID.SilverCoin, (int)silver);
+				if (copper > 0) Player.QuickSpawnItem(ItemID.CopperCoin, (int)copper);
 			}
 		}
 	}
