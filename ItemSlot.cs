@@ -42,7 +42,7 @@ namespace AutoTrash
 
 			spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 			//Texture2D texture2D = Main.itemTexture[this.item.type];
-			//Main.instance.LoadItem(item.type);
+			Main.instance.LoadItem(item.type);
 			Rectangle rectangle2;
 			if (Main.itemAnimations[id] != null)
 			{
