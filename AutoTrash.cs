@@ -33,7 +33,8 @@ namespace AutoTrash
 			//{
 			//	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader. Please update tModLoader to use this mod\n\n");
 			//}
-			Mod cheatSheet = ModLoader.GetMod("CheatSheet");
+			Mod cheatSheet;
+			ModLoader.TryGetMod("CheatSheet", out cheatSheet);
 			if (cheatSheet != null && cheatSheet.Version <= new Version(0, 2, 5, 10))
 			{
 				throw new Exception("Please update CheatSheet to the latest version to use alongside AutoTrash");
