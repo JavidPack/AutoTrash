@@ -21,10 +21,6 @@ namespace AutoTrash
 
 		public AutoTrash()
 		{
-			Properties = new ModProperties()
-			{
-				Autoload = true,
-			};
 		}
 
 		public override void Load()
