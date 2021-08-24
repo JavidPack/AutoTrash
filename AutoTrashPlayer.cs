@@ -64,7 +64,7 @@ namespace AutoTrash
 			{
 				if (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl))
 				{
-					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead))
+					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashServerConfig>().SellInstead))
 					{
 						Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0f);
 
@@ -117,7 +117,7 @@ namespace AutoTrash
 			var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
 			var serverconfig = ModContent.GetInstance<AutoTrashServerConfig>();
 
-			if (clientconfig.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
+			if (serverconfig.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
 				float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
 				var value = Math.Floor((double)(LastAutoTrashItem.value * LastAutoTrashItem.stack * sellPercent));
 

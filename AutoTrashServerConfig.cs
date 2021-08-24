@@ -9,14 +9,17 @@ namespace AutoTrash
 	{
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
-		#pragma warning disable 0649
 		[DefaultValue(15)]
 		[Label("AutoSell % sell value")]
 		[Tooltip("Customize the sell value of a item, default merchant sell value is 20%, mod's default sell value is ~15%")]
 		[Range(1, 100)]
-		public int SellValue;
-		#pragma warning restore 0649
+		public int SellValue { get; set; }
 
+		[DefaultValue(false)]
+		[Label("Sell items instead")]
+		[Tooltip("Will sell items on pickup instead of trashing them")]
+		public bool SellInstead { get; set; }
+		
 		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
 		{
 			string deny = "You do not have proper permission.";
