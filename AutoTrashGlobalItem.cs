@@ -158,7 +158,7 @@ namespace AutoTrash
 					{
 						int originalID = singleSlotArray[0].type;
 
-						if (clientconfig.SellInstead) {
+						if (serverconfig.SellInstead) {
 							float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
 							var value = (int)Math.Floor(singleSlotArray[0].value * singleSlotArray[0].stack * sellPercent);
 							if (!Main.mouseItem.IsAir || Main.LocalPlayer.BuyItem(value))
@@ -197,13 +197,13 @@ namespace AutoTrash
 						//else
 						//{
 						Main.hoverItemName = singleSlotArray[0].type != ItemID.None 
-							? (clientconfig.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list") 
-							: (clientconfig.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
+							? (serverconfig.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list") 
+							: (serverconfig.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
 						//}
 					}
 					else
 					{
-						Main.hoverItemName = (clientconfig.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
+						Main.hoverItemName = (serverconfig.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
 					}
 				}
 				singleSlotArray[0].newAndShiny = false;
@@ -211,7 +211,7 @@ namespace AutoTrash
 				{
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
 				}
-				else if (clientconfig.SellInstead)
+				else if (serverconfig.SellInstead)
 				{
 					Main.spriteBatch.Draw(ModContent.GetTexture("AutoTrash/AutoSellInvSlot"), new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ShopItem, 0, new Vector2(xPosition, yPosition));
@@ -232,18 +232,18 @@ namespace AutoTrash
 				{
 					Main.HoverItem = new Item();
 					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled 
-						? (clientconfig.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items" 
-						: (clientconfig.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
+						? (serverconfig.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items" 
+						: (serverconfig.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
 				}
 				if (clearButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (clientconfig.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
+					Main.hoverItemName = (serverconfig.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
 				}
 				if (listButtonHover)
 				{
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (clientconfig.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
+					Main.hoverItemName = (serverconfig.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
 				}
 
 				Main.inventoryScale = 0.85f;

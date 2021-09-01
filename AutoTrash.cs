@@ -12,6 +12,12 @@ namespace AutoTrash
 	internal class AutoTrash : Mod
 	{
 		// TODO: Pre-designed trash items sets. Sorting arrays?
+		public Mod herosmod;
+		public const string heropermission = "AutoTrash";
+		public const string heropermissiondisplayname = "Auto Trash";
+		public bool hasPermission;
+
+		//public static AutoTrash instance;
 		internal static AutoTrash instance;
 		internal AutoTrashGlobalItem autoTrashGlobalItem;
 		internal static UserInterface autoTrashUserInterface;
@@ -31,6 +37,7 @@ namespace AutoTrash
 			//{
 			//	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader. Please update tModLoader to use this mod\n\n");
 			//}
+			herosmod = ModLoader.GetMod("HEROsMod");
 			Mod cheatSheet = ModLoader.GetMod("CheatSheet");
 			if (cheatSheet != null && cheatSheet.Version <= new Version(0, 2, 5, 10))
 			{
@@ -50,13 +57,45 @@ namespace AutoTrash
 			}
 		}
 
+		public AutoTrash GetInstance()
+		{
+			return instance;
+		}
+
+		public void SetupHerosMod()
+		{
+			if (herosmod != null)
+			{
+				herosmod.Call(
+					// Special string
+					"AddPermission",
+					// Permission Name
+					heropermission,
+					// Permission Display Name
+					heropermissiondisplayname);
+			}
+		}
+
+		public bool getPermission()
+		{
+			return hasPermission;
+		}
+
 		public override void Unload()
 		{
 			instance = null;
 			autoTrashUserInterface = null;
+			herosmod = null;
+			hasPermission = false;
 
 			UICheckbox.checkboxTexture = null;
 			UICheckbox.checkmarkTexture = null;
+		}
+
+		public override void PostAddRecipes()
+		{
+			SetupHerosMod();
+
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
