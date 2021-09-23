@@ -29,18 +29,15 @@ namespace AutoTrash
 			NoValue = false;
 		}
 
-		public override TagCompound Save()
-		{
-			return new TagCompound
-			{
-				["AutoTrashItems"] = AutoTrashItems,
-				["AutoTrashEnabled"] = AutoTrashEnabled,
-				[nameof(NoValue)] = NoValue,
-			};
+        public override void SaveData(TagCompound tag)
+        {
+			tag["AutoTrashItems"] = AutoTrashItems;
+			tag["AutoTrashEnabled"] = AutoTrashEnabled;
+			tag[nameof(NoValue)] = NoValue;
 		}
 
-		public override void Load(TagCompound tag)
-		{
+        public override void LoadData(TagCompound tag)
+        {
 			AutoTrashItems = tag.Get<List<Item>>("AutoTrashItems");
 			AutoTrashEnabled = tag.GetBool("AutoTrashEnabled");
 			NoValue = tag.GetBool(nameof(NoValue));
