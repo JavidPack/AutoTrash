@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
 namespace AutoTrash
@@ -19,11 +18,11 @@ namespace AutoTrash
 		[Tooltip("Customize the position of the AutoTrash slot measured top to bottom from the top hotbar")]
 		[Range(0, 10)]
 		public int SlotPositionY;
-		
+
 		[DefaultValue(false)]
 		[Label("Sell items instead")]
 		[Tooltip("Will sell items on pickup instead of trashing them")]
 		public bool SellInstead { get; set; }
-		
+
 	}
 }

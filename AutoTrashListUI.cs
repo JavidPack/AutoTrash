@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
-using System;
-using Terraria.ID;
-using System.Linq;
 using ReLogic.Content;
+using Terraria;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.UI;
 
 namespace AutoTrash
 {
@@ -20,8 +17,7 @@ namespace AutoTrash
 		float spacing = 8f;
 		UICheckbox NoValueCheckbox;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			int checkboxesHeight = 30;
 
 			mainPanel = new UIPanel();
@@ -74,27 +70,22 @@ namespace AutoTrash
 			Append(mainPanel);
 		}
 
-		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
 			Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuClose);
 			visible = false;
 		}
 
 		Vector2 offset;
 		public bool dragging = false;
-		private void DragStart(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (evt.Target != autoTrashGridScrollbar)
-			{
+		private void DragStart(UIMouseEvent evt, UIElement listeningElement) {
+			if (evt.Target != autoTrashGridScrollbar) {
 				offset = new Vector2(evt.MousePosition.X - mainPanel.Left.Pixels, evt.MousePosition.Y - mainPanel.Top.Pixels);
 				dragging = true;
 			}
 		}
 
-		private void DragEnd(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (dragging)
-			{
+		private void DragEnd(UIMouseEvent evt, UIElement listeningElement) {
+			if (dragging) {
 				Vector2 end = evt.MousePosition;
 				dragging = false;
 
@@ -105,45 +96,37 @@ namespace AutoTrash
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			UpdateCheckboxes();
 			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
-			if (mainPanel.ContainsPoint(MousePosition))
-			{
+			if (mainPanel.ContainsPoint(MousePosition)) {
 				Main.LocalPlayer.mouseInterface = true;
 			}
-			if (dragging)
-			{
+			if (dragging) {
 				mainPanel.Left.Set(MousePosition.X - offset.X, 0f);
 				mainPanel.Top.Set(MousePosition.Y - offset.Y, 0f);
 				Recalculate();
 			}
 		}
 
-		internal static void OnScrollWheel_FixHotbarScroll(UIScrollWheelEvent evt, UIElement listeningElement)
-		{
+		internal static void OnScrollWheel_FixHotbarScroll(UIScrollWheelEvent evt, UIElement listeningElement) {
 			Main.LocalPlayer.ScrollHotbar(Terraria.GameInput.PlayerInput.ScrollWheelDelta / 120);
 		}
 
-		internal void UpdateNeeded()
-		{
+		internal void UpdateNeeded() {
 			updateneeded = true;
 		}
 
 		private bool updateneeded;
-		internal void UpdateCheckboxes()
-		{
+		internal void UpdateCheckboxes() {
 			if (!updateneeded) { return; }
 			updateneeded = false;
 			autoTrashGrid.Clear();
 
 			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 
-			foreach (var item in autoTrashPlayer.AutoTrashItems)
-			{
-				if (item.type != ItemID.Count)
-				{
+			foreach (var item in autoTrashPlayer.AutoTrashItems) {
+				if (item.type != ItemID.Count) {
 					ItemSlot box = new ItemSlot(item.type);
 
 					autoTrashGrid._items.Add(box);
@@ -159,16 +142,14 @@ namespace AutoTrash
 
 	public class FixedUIScrollbar : UIScrollbar
 	{
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			UserInterface temp = UserInterface.ActiveInstance;
 			UserInterface.ActiveInstance = AutoTrash.autoTrashUserInterface;
 			base.DrawSelf(spriteBatch);
 			UserInterface.ActiveInstance = temp;
 		}
 
-		public override void MouseDown(UIMouseEvent evt)
-		{
+		public override void MouseDown(UIMouseEvent evt) {
 			UserInterface temp = UserInterface.ActiveInstance;
 			UserInterface.ActiveInstance = AutoTrash.autoTrashUserInterface;
 			base.MouseDown(evt);

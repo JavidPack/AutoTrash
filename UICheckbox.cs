@@ -19,21 +19,17 @@ namespace AutoTrash
 		private bool disabled = false;
 		internal string hoverText;
 
-		public bool Selected
-		{
+		public bool Selected {
 			get { return selected; }
-			set
-			{
-				if (value != selected)
-				{
+			set {
+				if (value != selected) {
 					selected = value;
 					OnSelectedChanged?.Invoke(this, EventArgs.Empty);
 				}
 			}
 		}
 
-		public UICheckbox(string text, string hoverText, float textScale = 1, bool large = false) : base(text, textScale, large)
-		{
+		public UICheckbox(string text, string hoverText, float textScale = 1, bool large = false) : base(text, textScale, large) {
 			this.Left.Pixels += 20;
 			//TextColor = Color.Blue;
 			text = "   " + text;
@@ -43,28 +39,24 @@ namespace AutoTrash
 			Recalculate();
 		}
 
-		private void UICheckbox_onLeftClick(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (disabled) return;
+		private void UICheckbox_onLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+			if (disabled)
+				return;
 			this.Selected = !Selected;
 		}
 
-		public void SetDisabled(bool disabled = true)
-		{
+		public void SetDisabled(bool disabled = true) {
 			this.disabled = disabled;
-			if (disabled)
-			{
+			if (disabled) {
 				Selected = false;
 			}
 			TextColor = disabled ? Color.Gray : Color.White;
 		}
-		public void SetHoverText(string hoverText)
-		{
+		public void SetHoverText(string hoverText) {
 			this.hoverText = hoverText;
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
@@ -77,8 +69,7 @@ namespace AutoTrash
 			if (Selected)
 				spriteBatch.Draw(checkmarkTexture.Value, pos, null, disabled ? Color.Gray : Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-			if (IsMouseHovering)
-			{
+			if (IsMouseHovering) {
 				Main.hoverItemName = hoverText;
 			}
 		}

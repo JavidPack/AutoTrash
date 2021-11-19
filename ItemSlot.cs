@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.UI;
-using Terraria;
 using ReLogic.Content;
+using Terraria;
+using Terraria.UI;
 
 namespace AutoTrash
 {
@@ -18,8 +17,7 @@ namespace AutoTrash
 		internal int id;
 		internal Item item;
 
-		public ItemSlot(int id)
-		{
+		public ItemSlot(int id) {
 			this._texture = Terraria.GameContent.TextureAssets.Item[id];
 			this.id = id;
 			this.item = new Item();
@@ -29,14 +27,12 @@ namespace AutoTrash
 			this.Height.Set(backgroundTexture.Height * scale, 0f);
 		}
 
-		public override int CompareTo(object obj)
-		{
+		public override int CompareTo(object obj) {
 			ItemSlot other = obj as ItemSlot;
 			return id.CompareTo(other.id);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = base.GetDimensions();
 			//spriteBatch.Draw(this._texture, dimensions.Position(), Color.White * (base.IsMouseHovering ? this._visibilityActive : this._visibilityInactive));
 
@@ -44,24 +40,19 @@ namespace AutoTrash
 			//Texture2D texture2D = Main.itemTexture[this.item.type];
 			Main.instance.LoadItem(item.type);
 			Rectangle rectangle2;
-			if (Main.itemAnimations[id] != null)
-			{
+			if (Main.itemAnimations[id] != null) {
 				rectangle2 = Main.itemAnimations[id].GetFrame(_texture.Value);
 			}
-			else
-			{
+			else {
 				rectangle2 = _texture.Frame(1, 1, 0, 0);
 			}
 			float num = 1f;
 			float num2 = (float)backgroundTexture.Width * scale;
-			if ((float)rectangle2.Width > num2 || (float)rectangle2.Height > num2)
-			{
-				if (rectangle2.Width > rectangle2.Height)
-				{
+			if ((float)rectangle2.Width > num2 || (float)rectangle2.Height > num2) {
+				if (rectangle2.Width > rectangle2.Height) {
 					num = num2 / (float)rectangle2.Width;
 				}
-				else
-				{
+				else {
 					num = num2 / (float)rectangle2.Height;
 				}
 			}
@@ -74,8 +65,7 @@ namespace AutoTrash
 			Color colorColor = item.GetColor(Color.White);
 			//spriteBatch.Draw(_texture, drawPosition, new Rectangle?(rectangle2), this.item.GetAlpha(Color.White), 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
 			spriteBatch.Draw(_texture.Value, drawPosition, new Rectangle?(rectangle2), alphaColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
-			if (this.item.color != Color.Transparent)
-			{
+			if (this.item.color != Color.Transparent) {
 				spriteBatch.Draw(_texture.Value, drawPosition, new Rectangle?(rectangle2), colorColor, 0f, Vector2.Zero, num, SpriteEffects.None, 0f);
 			}
 			//if (this.item.stack > 1)
@@ -84,16 +74,14 @@ namespace AutoTrash
 			//}
 
 
-			if (IsMouseHovering)
-			{
+			if (IsMouseHovering) {
 				//Main.toolTip = item.Clone();
 				Main.hoverItemName = item.Name;
 				//ItemChecklistUI.hoverText = item.name + (item.modItem != null ? " [" + item.modItem.mod.Name + "]" : "");
 			}
 		}
 
-		public override void Click(UIMouseEvent evt)
-		{
+		public override void Click(UIMouseEvent evt) {
 			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 			autoTrashPlayer.AutoTrashItems.RemoveAll(x => x.type == this.item.type);
 			AutoTrash.instance.autoTrashListUI.UpdateNeeded();

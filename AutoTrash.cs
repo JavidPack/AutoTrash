@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using System;
-using Terraria;
-using Terraria.UI;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Linq;
 using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace AutoTrash
 {
@@ -19,26 +17,22 @@ namespace AutoTrash
 		internal static UserInterface autoTrashUserInterface;
 		internal AutoTrashListUI autoTrashListUI;
 
-		public AutoTrash()
-		{
+		public AutoTrash() {
 		}
 
-		public override void Load()
-		{
+		public override void Load() {
 			//if (ModLoader.version < new Version(0, 9, 1))
 			//{
 			//	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader. Please update tModLoader to use this mod\n\n");
 			//}
 			Mod cheatSheet;
 			ModLoader.TryGetMod("CheatSheet", out cheatSheet);
-			if (cheatSheet != null && cheatSheet.Version <= new Version(0, 2, 5, 10))
-			{
+			if (cheatSheet != null && cheatSheet.Version <= new Version(0, 2, 5, 10)) {
 				throw new Exception("Please update CheatSheet to the latest version to use alongside AutoTrash");
 			}
 			instance = this;
 			//autoTrashGlobalItem = (AutoTrashGlobalItem)GetGlobalItem("AutoTrashGlobalItem");
-			if (!Main.dedServ)
-			{
+			if (!Main.dedServ) {
 				autoTrashListUI = new AutoTrashListUI();
 				autoTrashListUI.Activate();
 				autoTrashUserInterface = new UserInterface();
@@ -49,8 +43,7 @@ namespace AutoTrash
 			}
 		}
 
-		public override void Unload()
-		{
+		public override void Unload() {
 			instance = null;
 			autoTrashUserInterface = null;
 
@@ -58,8 +51,7 @@ namespace AutoTrash
 			UICheckbox.checkmarkTexture = null;
 		}
 
-		public override void PostSetupContent()
-		{
+		public override void PostSetupContent() {
 			/*
 			if (!Main.dedServ)
 			{
@@ -75,17 +67,14 @@ namespace AutoTrash
 	}
 
 	internal class AutoTrashSystem : ModSystem
-    {
-		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-		{
+	{
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 			int inventoryLayerIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-			if (inventoryLayerIndex != -1)
-			{
+			if (inventoryLayerIndex != -1) {
 				layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer(
 					"AutoTrash: Auto Trash Slot",
-					delegate
-					{
-					 	ModContent.GetInstance<AutoTrashGlobalItem>().DrawUpdateAutoTrash();
+					delegate {
+						ModContent.GetInstance<AutoTrashGlobalItem>().DrawUpdateAutoTrash();
 						return true;
 					},
 					InterfaceScaleType.UI)
@@ -93,10 +82,8 @@ namespace AutoTrash
 
 				layers.Insert(inventoryLayerIndex + 2, new LegacyGameInterfaceLayer(
 					"AutoTrash: Auto Trash Cursor",
-					delegate
-					{
-						if (Main.cursorOverride == 6 && (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl)))
-						{
+					delegate {
+						if (Main.cursorOverride == 6 && (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl))) {
 							var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 							if (autoTrashPlayer.AutoTrashEnabled)
 								Main.cursorOverride = 5;
@@ -108,14 +95,11 @@ namespace AutoTrash
 			}
 
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
-			if (MouseTextIndex != -1)
-			{
+			if (MouseTextIndex != -1) {
 				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
 					"AutoTrash: Auto Trash List",
-					delegate
-					{
-						if (AutoTrashListUI.visible)
-						{
+					delegate {
+						if (AutoTrashListUI.visible) {
 							AutoTrash.autoTrashUserInterface.Update(Main._drawInterfaceGameTime);
 							ModContent.GetInstance<AutoTrash>().autoTrashListUI.Draw(Main.spriteBatch);
 						}
