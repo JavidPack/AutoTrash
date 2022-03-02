@@ -109,14 +109,15 @@ namespace AutoTrash
 				var silver = Math.Floor((value - (plat * Item.platinum) - (gold * Item.gold)) / Item.silver);
 				var copper = Math.Floor(value - (plat * Item.platinum) - (gold * Item.gold) - (silver * Item.silver));
 
-				if (plat > 0)
-					Player.QuickSpawnItem(ItemID.PlatinumCoin, (int)plat);
+				Terraria.DataStructures.IEntitySource source = Main.LocalPlayer.GetItemSource_OpenItem(LastAutoTrashItem.type);
+				if (plat > 0) 
+					Player.QuickSpawnItem(source, ItemID.PlatinumCoin, (int)plat);
 				if (gold > 0)
-					Player.QuickSpawnItem(ItemID.GoldCoin, (int)gold);
+					Player.QuickSpawnItem(source, ItemID.GoldCoin, (int)gold);
 				if (silver > 0)
-					Player.QuickSpawnItem(ItemID.SilverCoin, (int)silver);
+					Player.QuickSpawnItem(source, ItemID.SilverCoin, (int)silver);
 				if (copper > 0)
-					Player.QuickSpawnItem(ItemID.CopperCoin, (int)copper);
+					Player.QuickSpawnItem(source, ItemID.CopperCoin, (int)copper);
 			}
 		}
 	}
