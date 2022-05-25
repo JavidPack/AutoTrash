@@ -53,7 +53,7 @@ namespace AutoTrash
 			if (context == Terraria.UI.ItemSlot.Context.InventoryItem || context == Terraria.UI.ItemSlot.Context.InventoryCoin || context == Terraria.UI.ItemSlot.Context.InventoryAmmo) {
 				if (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl)) {
 					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead)) {
-						Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0f);
+						Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
 
 						if (!AutoTrashItems.Any(x => x.type == inventory[slot].type)) {
 							Item newItem = new Item();

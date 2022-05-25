@@ -16,6 +16,10 @@ namespace AutoTrash
 		private static Asset<Texture2D> clearTexture;
 
 		public AutoTrashGlobalItem() {
+			// Why is this being called each time an item is created?
+		}
+
+		public override void SetStaticDefaults() {
 			singleSlotArray = new Item[1];
 			if (Main.netMode != NetmodeID.Server) {
 				clearTexture = ModContent.Request<Texture2D>("AutoTrash/closeButton");
