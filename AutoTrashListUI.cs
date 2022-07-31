@@ -32,10 +32,10 @@ namespace AutoTrash
 
 			Asset<Texture2D> closeTexture = AutoTrash.instance.Assets.Request<Texture2D>("closeButton");
 			UIImageButton closeButton = new UIImageButton(closeTexture);
-			closeButton.Left.Set(-32, 1f);
-			closeButton.Top.Set(10, 0f);
-			closeButton.Width.Set(22, 0f);
-			closeButton.Height.Set(22, 0f);
+			closeButton.Left.Set(-23, 1f);
+			closeButton.Top.Set(8, 0f);
+			closeButton.Width.Set(15, 0f);
+			closeButton.Height.Set(14, 0f);
 			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
 			mainPanel.Append(closeButton);
 
@@ -50,7 +50,6 @@ namespace AutoTrash
 			autoTrashGrid.Width.Set(-25f, 1f);
 			autoTrashGrid.Height.Set(-55f - checkboxesHeight, 1f);
 			autoTrashGrid.ListPadding = 12f;
-			autoTrashGrid.OnScrollWheel += OnScrollWheel_FixHotbarScroll;
 			mainPanel.Append(autoTrashGrid);
 
 			autoTrashGridScrollbar = new FixedUIScrollbar();
@@ -101,6 +100,7 @@ namespace AutoTrash
 			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
 			if (mainPanel.ContainsPoint(MousePosition)) {
 				Main.LocalPlayer.mouseInterface = true;
+				Terraria.GameInput.PlayerInput.LockVanillaMouseScroll("AutoTrash/AutoTrashListUI");
 			}
 			if (dragging) {
 				mainPanel.Left.Set(MousePosition.X - offset.X, 0f);
@@ -109,9 +109,6 @@ namespace AutoTrash
 			}
 		}
 
-		internal static void OnScrollWheel_FixHotbarScroll(UIScrollWheelEvent evt, UIElement listeningElement) {
-			Main.LocalPlayer.ScrollHotbar(Terraria.GameInput.PlayerInput.ScrollWheelDelta / 120);
-		}
 
 		internal void UpdateNeeded() {
 			updateneeded = true;
