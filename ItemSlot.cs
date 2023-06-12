@@ -81,7 +81,7 @@ namespace AutoTrash
 			}
 		}
 
-		public override void Click(UIMouseEvent evt) {
+		public override void LeftClick(UIMouseEvent evt) {
 			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 			autoTrashPlayer.AutoTrashItems.RemoveAll(x => x.type == this.item.type);
 			AutoTrash.instance.autoTrashListUI.UpdateNeeded();

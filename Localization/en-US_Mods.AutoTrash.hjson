@@ -1,0 +1,29 @@
+Configs: {
+	AutoTrashServerConfig: {
+		DisplayName: Auto Trash Server Config
+
+		SellValue: {
+			Tooltip: Customize the sell value of a item, default merchant sell value is 20%, mod's default sell value is ~15%
+			Label: AutoSell % sell value
+		}
+	}
+
+	AutoTrashClientConfig: {
+		DisplayName: Auto Trash Client Config
+
+		SlotPositionX: {
+			Tooltip: Customize the position of the AutoTrash slot measured left to right from the 1st hotbar
+			Label: AutoTrash Slot Icon Position X
+		}
+
+		SlotPositionY: {
+			Tooltip: Customize the position of the AutoTrash slot measured top to bottom from the top hotbar
+			Label: AutoTrash Slot Icon Position Y
+		}
+
+		SellInstead: {
+			Tooltip: Will sell items on pickup instead of trashing them
+			Label: Sell items instead
+		}
+	}
+}

@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace AutoTrash
@@ -27,8 +28,8 @@ namespace AutoTrash
 			mainPanel.Width.Set(200f, 0f);
 			mainPanel.Height.Set(300f + checkboxesHeight, 0f);
 			mainPanel.BackgroundColor = new Color(73, 94, 171);
-			mainPanel.OnMouseDown += DragStart;
-			mainPanel.OnMouseUp += DragEnd;
+			mainPanel.OnLeftMouseDown += DragStart;
+			mainPanel.OnLeftMouseUp += DragEnd;
 
 			Asset<Texture2D> closeTexture = AutoTrash.instance.Assets.Request<Texture2D>("closeButton");
 			UIImageButton closeButton = new UIImageButton(closeTexture);
@@ -36,7 +37,7 @@ namespace AutoTrash
 			closeButton.Top.Set(8, 0f);
 			closeButton.Width.Set(15, 0f);
 			closeButton.Height.Set(14, 0f);
-			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
+			closeButton.OnLeftClick += new MouseEvent(CloseButtonClicked);
 			mainPanel.Append(closeButton);
 
 			UIText label = new UIText("Click to remove");
@@ -123,7 +124,7 @@ namespace AutoTrash
 			var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 
 			foreach (var item in autoTrashPlayer.AutoTrashItems) {
-				if (item.type != ItemID.Count) {
+				if (item.ModItem is not Terraria.ModLoader.Default.UnloadedItem) {
 					ItemSlot box = new ItemSlot(item.type);
 
 					autoTrashGrid._items.Add(box);
@@ -146,10 +147,10 @@ namespace AutoTrash
 			UserInterface.ActiveInstance = temp;
 		}
 
-		public override void MouseDown(UIMouseEvent evt) {
+		public override void LeftMouseDown(UIMouseEvent evt) {
 			UserInterface temp = UserInterface.ActiveInstance;
 			UserInterface.ActiveInstance = AutoTrash.autoTrashUserInterface;
-			base.MouseDown(evt);
+			base.LeftMouseDown(evt);
 			UserInterface.ActiveInstance = temp;
 		}
 	}

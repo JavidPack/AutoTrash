@@ -7,21 +7,16 @@ namespace AutoTrash
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
+		// TODO: Custom UI instead.
 		[DefaultValue(8)]
-		[Label("AutoTrash Slot Icon Position X")]
-		[Tooltip("Customize the position of the AutoTrash slot measured left to right from the 1st hotbar")]
 		[Range(0, 10)]
 		public int SlotPositionX;
 
 		[DefaultValue(5)]
-		[Label("AutoTrash Slot Icon Position Y")]
-		[Tooltip("Customize the position of the AutoTrash slot measured top to bottom from the top hotbar")]
 		[Range(0, 10)]
 		public int SlotPositionY;
 
 		[DefaultValue(false)]
-		[Label("Sell items instead")]
-		[Tooltip("Will sell items on pickup instead of trashing them")]
 		public bool SellInstead { get; set; }
 
 	}

@@ -35,7 +35,7 @@ namespace AutoTrash
 			text = "   " + text;
 			this.hoverText = hoverText;
 			SetText(text);
-			OnClick += UICheckbox_onLeftClick;
+			OnLeftClick += UICheckbox_onLeftClick;
 			Recalculate();
 		}
 
