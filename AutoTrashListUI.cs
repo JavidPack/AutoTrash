@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -40,7 +41,7 @@ namespace AutoTrash
 			closeButton.OnLeftClick += new MouseEvent(CloseButtonClicked);
 			mainPanel.Append(closeButton);
 
-			UIText label = new UIText("Click to remove");
+			UIText label = new UIText(Language.GetTextValue("Mods.AutoTrash.ClickToRemove"));
 			label.Left.Set(8, 0f);
 			label.Top.Set(8, 0f);
 			mainPanel.Append(label);
@@ -61,7 +62,7 @@ namespace AutoTrash
 			mainPanel.Append(autoTrashGridScrollbar);
 			autoTrashGrid.SetScrollbar(autoTrashGridScrollbar);
 
-			NoValueCheckbox = new UICheckbox("No Value", "Trash all Items with No Value");
+			NoValueCheckbox = new UICheckbox(Language.GetTextValue("Mods.AutoTrash.NoValue"), Language.GetTextValue("Mods.AutoTrash.TrashAllItemsWithNoValue"));
 			NoValueCheckbox.Top.Set(300, 0f);
 			NoValueCheckbox.Left.Set(12, 0f);
 			NoValueCheckbox.OnSelectedChanged += (a, b) => Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().NoValue = NoValueCheckbox.Selected;

@@ -5,6 +5,7 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
 namespace AutoTrash
@@ -28,14 +29,15 @@ namespace AutoTrash
 		}
 
 		public override void SaveData(TagCompound tag) {
-			tag["AutoTrashItems"] = AutoTrashItems;
-			tag["AutoTrashEnabled"] = AutoTrashEnabled;
+			AutoTrashItems.RemoveAll(x => x.ModItem is UnloadedItem);
+			tag[nameof(AutoTrashItems)] = AutoTrashItems;
+			tag[nameof(AutoTrashEnabled)] = AutoTrashEnabled;
 			tag[nameof(NoValue)] = NoValue;
 		}
 
 		public override void LoadData(TagCompound tag) {
-			AutoTrashItems = tag.Get<List<Item>>("AutoTrashItems");
-			AutoTrashEnabled = tag.GetBool("AutoTrashEnabled");
+			AutoTrashItems = tag.Get<List<Item>>(nameof(AutoTrashItems));
+			AutoTrashEnabled = tag.GetBool(nameof(AutoTrashEnabled));
 			NoValue = tag.GetBool(nameof(NoValue));
 
 			AutoTrash.instance.autoTrashListUI?.UpdateNeeded();

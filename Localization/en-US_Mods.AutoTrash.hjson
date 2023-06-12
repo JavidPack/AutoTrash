@@ -1,3 +1,24 @@
+NoValue: No Value
+TrashAllItemsWithNoValue: Trash all Items with No Value
+ClickToRemove: Click to remove
+YouNeedToHoldAltAndClickToClearTheList: You need to hold alt and click to clear the list
+NotEnoughMoneyToReclaimAutoSellItem: Not enough money to reclaim Auto-Sell item
+ClickToRemoveFromAutoSellList: Click to remove from Auto-Sell list
+ClickToRemoveFromAutoTrashList: Click to remove from Auto-Trash list
+PlaceItemToAddToAutoSellList: Place item to add to Auto-Sell list
+PlaceItemToAddToAutoTrashList: Place item to add to Auto-Trash list
+EnableAutoSellToAutomaticallySellItemsOnPickup: Enable Auto-Sell to automatically sell items on pickup
+EnableAutoTrashToAutomaticallyTrashItemsOnPickup: Enable Auto-Trash to automatically trash items on pickup
+AutoSellEnabled: Auto-Sell Enabled: {0} {^0:item;items}
+AutoTrashEnabled: Auto-Trash Enabled: {0} {^0:item;items}
+AutoSellDisabled: Auto-Sell Disabled
+AutoTrashDisabled: Auto-Trash Disabled
+ClickToViewAutoSellList: Click to View Auto-Sell list
+ClickToViewAutoTrashList: Click to View Auto-Trash list
+HoldAltAndClickToClearAutoSellList: Hold Alt and Click to Clear Auto-Sell list
+HoldAltAndClickToClearAutoTrashList: Hold Alt and Click to Clear Auto-Trash list
+RecipeBrowserFilterNotAutoTrashed: Not Auto-Trashed
+
 Configs: {
 	AutoTrashServerConfig: {
 		DisplayName: Auto Trash Server Config

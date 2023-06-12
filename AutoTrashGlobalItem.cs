@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace AutoTrash
@@ -14,10 +15,6 @@ namespace AutoTrash
 	{
 		private static Item[] singleSlotArray;
 		private static Asset<Texture2D> clearTexture;
-
-		public AutoTrashGlobalItem() {
-			// Why is this being called each time an item is created?
-		}
 
 		public override void SetStaticDefaults() {
 			singleSlotArray = new Item[1];
@@ -34,7 +31,7 @@ namespace AutoTrash
 			//{
 			//	Main.NewText("Auto: " + autoItme.type);
 			//}
-			if (AutoTrashPlayer.IsModItem(item) && item.ModItem.Name == "MysteryItem") {
+			if (AutoTrashPlayer.IsModItem(item) && item.ModItem is Terraria.ModLoader.Default.UnloadedItem) {
 				return true;
 			}
 			if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(item)) {
@@ -123,11 +120,10 @@ namespace AutoTrash
 							}
 						}
 						else {
-							Main.NewText("You need to hold alt and click to clear the list");
+							Main.NewText(Language.GetTextValue("Mods.AutoTrash.YouNeedToHoldAltAndClickToClearTheList"));
 						}
 					}
 				}
-
 
 				singleSlotArray[0] = autoTrashPlayer.LastAutoTrashItem;
 				if (slotRectangle.Contains(mousePoint) && !enableButtonHover && !clearButtonHover && !listButtonHover) {
@@ -141,7 +137,7 @@ namespace AutoTrash
 							if (!Main.mouseItem.IsAir || Main.LocalPlayer.BuyItem(value))
 								Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
 							else
-								Main.NewText("Not enough money to reclaim Auto-Sell item");
+								Main.NewText(Language.GetTextValue("Mods.AutoTrash.NotEnoughMoneyToReclaimAutoSellItem"));
 						}
 						else
 							Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
@@ -171,24 +167,24 @@ namespace AutoTrash
 						//else
 						//{
 						Main.hoverItemName = singleSlotArray[0].type != ItemID.None
-							? (clientconfig.SellInstead ? "Click to remove from Auto-Sell list" : "Click to remove from Auto-Trash list")
-							: (clientconfig.SellInstead ? "Place item to add to Auto-Sell list" : "Place item to add to Auto-Trash list");
+							? Language.GetTextValue((clientconfig.SellInstead ? "Mods.AutoTrash.ClickToRemoveFromAutoSellList" : "Mods.AutoTrash.ClickToRemoveFromAutoTrashList"))
+							: Language.GetTextValue((clientconfig.SellInstead ? "Mods.AutoTrash.PlaceItemToAddToAutoSellList" :  "Mods.AutoTrash.PlaceItemToAddToAutoTrashList"));
 						//}
 					}
 					else {
-						Main.hoverItemName = (clientconfig.SellInstead ? "Enable Auto-Sell to automatically sell items on pickup" : "Enable Auto-Trash to automatically trash items on pickup");
+						Main.hoverItemName = Language.GetTextValue(clientconfig.SellInstead ? "Mods.AutoTrash.EnableAutoSellToAutomaticallySellItemsOnPickup" : "Mods.AutoTrash.EnableAutoTrashToAutomaticallyTrashItemsOnPickup");
 					}
 				}
 				singleSlotArray[0].newAndShiny = false;
 				if (!autoTrashPlayer.AutoTrashEnabled) {
-					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ChestItem, 0, new Vector2(xPosition, yPosition), default);
 				}
 				else if (clientconfig.SellInstead) {
 					Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AutoTrash/AutoSellInvSlot").Value, new Vector2(xPosition + 9, yPosition + 9), Color.White * 0.7f);
 					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.ShopItem, 0, new Vector2(xPosition, yPosition));
 				}
 				else {
-					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2((float)xPosition, (float)yPosition), default(Color));
+					Terraria.UI.ItemSlot.Draw(Main.spriteBatch, singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem, 0, new Vector2(xPosition, yPosition), default);
 				}
 				bool itemChanged = autoTrashPlayer.LastAutoTrashItem != singleSlotArray[0];
 				autoTrashPlayer.LastAutoTrashItem = singleSlotArray[0];
@@ -201,37 +197,19 @@ namespace AutoTrash
 				if (enableButtonHover) {
 					Main.HoverItem = new Item();
 					Main.hoverItemName = autoTrashPlayer.AutoTrashEnabled
-						? (clientconfig.SellInstead ? "Auto-Sell Enabled: " : "Auto-Trash Enabled: ") + autoTrashPlayer.AutoTrashItems.Count + " items"
-						: (clientconfig.SellInstead ? "Auto-Sell Disabled: " : "Auto-Trash Disabled: ");
+						? Language.GetTextValue(clientconfig.SellInstead ? "Mods.AutoTrash.AutoSellEnabled" : "Mods.AutoTrash.AutoTrashEnabled", autoTrashPlayer.AutoTrashItems.Count)
+						: Language.GetTextValue(clientconfig.SellInstead ? "Mods.AutoTrash.AutoSellDisabled" : "Mods.AutoTrash.AutoTrashDisabled");
 				}
 				if (clearButtonHover) {
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (clientconfig.SellInstead ? "Hold Alt and Click to Clear Auto-Sell list" : "Hold Alt and Click to Clear Auto-Trash list");
+					Main.hoverItemName = Language.GetTextValue(clientconfig.SellInstead ? "Mods.AutoTrash.HoldAltAndClickToClearAutoSellList" : "Mods.AutoTrash.HoldAltAndClickToClearAutoTrashList");
 				}
 				if (listButtonHover) {
 					Main.HoverItem = new Item();
-					Main.hoverItemName = (clientconfig.SellInstead ? "Click to View Auto-Sell list" : "Click to View Auto-Trash list");
+					Main.hoverItemName = Language.GetTextValue(clientconfig.SellInstead ? "Mods.AutoTrash.ClickToViewAutoSellList" : "Mods.AutoTrash.ClickToViewAutoTrashList");
 				}
 
 				Main.inventoryScale = 0.85f;
-
-				//AutoTrashPlayer csp = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>(mod);
-				//	if (r.Contains(value)/* && !flag2*/)
-				//	{
-				//		Main.LocalPlayer.mouseInterface = true;
-				//		Main.armorHide = true;
-				//		singleSlotArray[0] = accItem;
-				//		ItemSlot.Handle(singleSlotArray, ItemSlot.Context.EquipAccessory, 0);
-				//		accItem = singleSlotArray[0];
-				//		//ItemSlot.Handle(ref accItem, ItemSlot.Context.EquipAccessory);
-				//	}
-				//	singleSlotArray[0] = accItem;
-				//	ItemSlot.Draw(spriteBatch, singleSlotArray, 10, 0, new Vector2(r.X, r.Y));
-				//	accItem = singleSlotArray[0];
-
-				//	//ItemSlot.Draw(spriteBatch, ref accItem, 10, new Vector2(r.X, r.Y));
-
-				//	csp.ExtraAccessories[i] = accItem;
 			}
 		}
 	}
