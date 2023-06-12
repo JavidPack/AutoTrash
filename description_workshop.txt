@@ -1,0 +1,16 @@
+﻿[img]https://i.imgur.com/W2c5CX6.gif[/img]
+
+[h1]Overview[/h1]
+Adds an Auto-Trash Slot:
+Place items in the Auto-Trash slot to immediately trash them as they are picked up later. Useful for all those items that clutter your inventory. 
+
+Ctrl+Shift click inventory items to quickly add to auto trash list.
+
+You can also use the config to have the Auto-Trash slot instead act as an Auto-Sell slot. In Auto-Sell mode, you automatically get coins when items are auto-trashed. The default is 15%, slightly less than the 20% you would get from shops.
+
+[h1]Links[/h1]
+Source code hosted on [url=github.com/JavidPack/AutoTrash]GitHub[/url], collaboration welcome
+For questions or suggestions, come to my Discord: [url=discord.gg/w8Hcwby][img]https://discordapp.com/api/guilds/276235094622994433/widget.png?style=shield[/img][/url]
+Bug reports in the comments here will not be seen, come to Discord or Github to report issues.
+If you'd like to support my mods, I have a Patreon [url=www.patreon.com/jopojelly][img]https://i.imgur.com/xII2DwJ.png[/img][/url]
+[url=https://steamcommunity.com/profiles/76561198025715866/myworkshopfiles/?appid=1281930]Check out all my mods[/url]
