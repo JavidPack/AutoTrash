@@ -1,50 +1,50 @@
-// NoValue: No Value
-// TrashAllItemsWithNoValue: Trash all Items with No Value
-// ClickToRemove: Click to remove
-// YouNeedToHoldAltAndClickToClearTheList: You need to hold alt and click to clear the list
-// NotEnoughMoneyToReclaimAutoSellItem: Not enough money to reclaim Auto-Sell item
-// ClickToRemoveFromAutoSellList: Click to remove from Auto-Sell list
-// ClickToRemoveFromAutoTrashList: Click to remove from Auto-Trash list
-// PlaceItemToAddToAutoSellList: Place item to add to Auto-Sell list
-// PlaceItemToAddToAutoTrashList: Place item to add to Auto-Trash list
-// EnableAutoSellToAutomaticallySellItemsOnPickup: Enable Auto-Sell to automatically sell items on pickup
-// EnableAutoTrashToAutomaticallyTrashItemsOnPickup: Enable Auto-Trash to automatically trash items on pickup
-// AutoSellEnabled: Auto-Sell Enabled: {0} {^0:item;items}
-// AutoTrashEnabled: Auto-Trash Enabled: {0} {^0:item;items}
-// AutoSellDisabled: Auto-Sell Disabled
-// AutoTrashDisabled: Auto-Trash Disabled
-// ClickToViewAutoSellList: Click to View Auto-Sell list
-// ClickToViewAutoTrashList: Click to View Auto-Trash list
-// HoldAltAndClickToClearAutoSellList: Hold Alt and Click to Clear Auto-Sell list
-// HoldAltAndClickToClearAutoTrashList: Hold Alt and Click to Clear Auto-Trash list
-// RecipeBrowserFilterNotAutoTrashed: Not Auto-Trashed
+NoValue: Никакой стоимости
+TrashAllItemsWithNoValue: Удалить все предметы без стоимости
+ClickToRemove: Нажмите, чтобы удалить
+YouNeedToHoldAltAndClickToClearTheList: Удерживая Alt, кликните, чтобы очистить список
+NotEnoughMoneyToReclaimAutoSellItem: Недостаточно денег для возврата предмета с автоматической продажей
+ClickToRemoveFromAutoSellList: Нажмите, чтобы удалить из списка автоматической продажи
+ClickToRemoveFromAutoTrashList: Нажмите, чтобы удалить из списка автоматического удаления
+PlaceItemToAddToAutoSellList: Поместите предмет для добавления в спискок автоматической продажи
+PlaceItemToAddToAutoTrashList: Поместите предмет для добавления в список автоматического удаления
+EnableAutoSellToAutomaticallySellItemsOnPickup: Включите Авто-Продажу, чтобы автоматически продавать предметы при получении
+EnableAutoTrashToAutomaticallyTrashItemsOnPickup: Включите Авто-Удаление, чтобы автоматически удалять предметы при получении
+AutoSellEnabled: Автоматическая продажа включена: {0} {^0:item;items}
+AutoTrashEnabled: Автоматическое удаление включено: {0} {^0:item;items}
+AutoSellDisabled: Автоматическая продажа отключена
+AutoTrashDisabled: Автоматическое удаление отключено
+ClickToViewAutoSellList: Нажмите, чтобы просмотреть список автоматической продажи
+ClickToViewAutoTrashList: Нажмите, чтобы просмотреть список автоматического удаления
+HoldAltAndClickToClearAutoSellList: Удерживая Alt, кликните, чтобы очистить список автоматической продажи.
+HoldAltAndClickToClearAutoTrashList: Удерживая Alt, кликните, чтобы очистить список автоматического удаления
+RecipeBrowserFilterNotAutoTrashed: Не удаляется автоматически
 
 Configs: {
 	AutoTrashServerConfig: {
-		// DisplayName: Auto Trash Server Config
+		DisplayName: Конфигурация автоматического удаления (серверная)
 
 		SellValue: {
-			// Tooltip: Customize the sell value of a item, default merchant sell value is 20%, mod's default sell value is ~15%
-			// Label: AutoSell % sell value
+			Tooltip: Настройте цену продажи предмета, стоимость продажи у продавца по умолчанию составляет 20%, стоимость продажи мода по умолчанию составляет ~ 15%
+			Label: Авто-Продажа % стоимость продажи
 		}
 	}
 
 	AutoTrashClientConfig: {
-		// DisplayName: Auto Trash Client Config
+		DisplayName: Конфигурация автоматического удаления
 
 		SlotPositionX: {
-			// Tooltip: Customize the position of the AutoTrash slot measured left to right from the 1st hotbar
-			// Label: AutoTrash Slot Icon Position X
+			Tooltip: Настройте положение слота Авто-Удаления слева направо от 1-й панели быстрого доступа.
+			Label: Положение (X) значка Авто-Удаления 
 		}
 
 		SlotPositionY: {
-			// Tooltip: Customize the position of the AutoTrash slot measured top to bottom from the top hotbar
-			// Label: AutoTrash Slot Icon Position Y
+			Tooltip: Настройте положение слота Авто-Удаления сверху вниз от верхней панели быстрого доступа.
+			Label: Положение (Y) значка Авто-Удаления 
 		}
 
 		SellInstead: {
-			// Tooltip: Will sell items on pickup instead of trashing them
-			// Label: Sell items instead
+			Tooltip: Следует ли продавать предметы после их поднятия, а не выбрасывать их.
+			Label: Продавать ли предметы мгновенно
 		}
 	}
 }
