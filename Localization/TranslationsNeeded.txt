@@ -1,0 +1,2 @@
+en-US, 30/30, 100%, missing 0
+ru-RU, 30/30, 100%, missing 0
