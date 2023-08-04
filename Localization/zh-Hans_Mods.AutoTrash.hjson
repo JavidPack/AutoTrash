@@ -1,0 +1,50 @@
+NoValue: 无价值
+TrashAllItemsWithNoValue: 将所有无价值物品丢弃
+ClickToRemove: 点击以移出自动丢弃列表
+YouNeedToHoldAltAndClickToClearTheList: 你需要按住alt再左键单击以清空自动丢弃列表
+NotEnoughMoneyToReclaimAutoSellItem: 没有足够的钱来赎回自动售卖的物品
+ClickToRemoveFromAutoSellList: 点击以移出自动售卖清单
+ClickToRemoveFromAutoTrashList: 点击以移出自动丢弃列表
+PlaceItemToAddToAutoSellList: 将物品放在这里以添加进自动售卖清单
+PlaceItemToAddToAutoTrashList: 将物品放在这里以添加进丢弃列表
+EnableAutoSellToAutomaticallySellItemsOnPickup: 启用以在拾取物品时将其自动售卖
+EnableAutoTrashToAutomaticallyTrashItemsOnPickup: 启用在拾取物品时将其自动丢弃
+AutoSellEnabled: 自动售卖启用: {0} {^0:个物品;个物品}
+AutoTrashEnabled: 自动丢弃启用: {0} {^0:个物品;个物品}
+AutoSellDisabled: 自动售卖禁用
+AutoTrashDisabled: 自动丢弃禁用
+ClickToViewAutoSellList: 点击以查看自动售卖清单
+ClickToViewAutoTrashList: 点击以查看自动丢弃列表
+HoldAltAndClickToClearAutoSellList: 按住alt再左键单击以清空自动售卖清单
+HoldAltAndClickToClearAutoTrashList: 按住alt再左键单击以清空自动丢弃列表
+RecipeBrowserFilterNotAutoTrashed: 没有自动丢弃
+
+Configs: {
+	AutoTrashServerConfig: {
+		DisplayName: 智能垃圾桶高级设置
+
+		SellValue: {
+			Tooltip: 调整自动售出物品的价格，默认为手动卖给商人价格的20%，模组物品价格为15%
+			Label: 自动售卖 % 价格
+		}
+	}
+
+	AutoTrashClientConfig: {
+		DisplayName: 智能垃圾桶基础设置
+
+		SlotPositionX: {
+			Tooltip: 横向调整智能垃圾桶图标的显示位置
+			Label: 智能垃圾桶图标 X 轴显示位置
+		}
+
+		SlotPositionY: {
+			Tooltip: 纵向调整智能垃圾桶图标的显示位置
+			Label: 智能垃圾桶图标 Y 轴显示位置
+		}
+
+		SellInstead: {
+			Tooltip: 将会自动将卖出物品而不是丢弃
+			Label: 自动售卖物品
+		}
+	}
+}
