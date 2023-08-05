@@ -1,3 +1,9 @@
 en-US, 30/30, 100%, missing 0
+de-DE, 0/30, 0%, missing 30
+it-IT, 0/30, 0%, missing 30
+fr-FR, 0/30, 0%, missing 30
+es-ES, 0/30, 0%, missing 30
 ru-RU, 30/30, 100%, missing 0
 zh-Hans, 30/30, 100%, missing 0
+pt-BR, 0/30, 0%, missing 30
+pl-PL, 0/30, 0%, missing 30
