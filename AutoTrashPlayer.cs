@@ -17,7 +17,7 @@ namespace AutoTrash
 		public Item LastAutoTrashItem;
 
 		public bool NoValue;
-		internal bool NoValueBelongs(Item item) => item.value == 0 && !ItemID.Sets.NebulaPickup[item.type] && !heartsAndMana.Contains(item.type) && !ItemID.Sets.BossBag && item.type != ItemID.DefenderMedal;
+		internal bool NoValueBelongs(Item item) => item.value == 0 && !ItemID.Sets.NebulaPickup[item.type] && !heartsAndMana.Contains(item.type) && !ItemID.Sets.BossBag[item.type] && item.type != ItemID.DefenderMedal;
 		internal static int[] heartsAndMana = new int[] { 58, 1734, 1867, 184, 1735, 1868 };
 
 		public override void Initialize() {
@@ -54,7 +54,7 @@ namespace AutoTrash
 		public override bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			if (context == Terraria.UI.ItemSlot.Context.InventoryItem || context == Terraria.UI.ItemSlot.Context.InventoryCoin || context == Terraria.UI.ItemSlot.Context.InventoryAmmo) {
 				if (Main.keyState.IsKeyDown(Keys.LeftControl) || Main.keyState.IsKeyDown(Keys.RightControl)) {
-					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead)) {
+					if (AutoTrashEnabled && (!AutoTrashItems.Any(x => x.type == inventory[slot].type) || ModContent.GetInstance<AutoTrashClientConfig>().SellInstead) && !inventory[slot].favorited) {
 						Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
 
 						if (!AutoTrashItems.Any(x => x.type == inventory[slot].type)) {
