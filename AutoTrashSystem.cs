@@ -9,6 +9,23 @@ namespace AutoTrash
 {
 	internal class AutoTrashSystem : ModSystem
 	{
+		public override void Load() {
+			On_Item.NewItem_Inner += SkipSpawnIfAutoTrashed;
+		}
+
+		private static int SkipSpawnIfAutoTrashed(On_Item.orig_NewItem_Inner orig, Terraria.DataStructures.IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack, bool noBroadcast, int pfix, bool noGrabDelay, bool reverseLookup) {
+			var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
+			if (clientconfig.PreventSpawn) {
+				var fakeItem = new Item(Type); // ShouldItemBeTrashed needs an Item instance
+				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
+				if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(fakeItem)) {
+					return Main.maxItems;
+				}
+			}
+
+			return orig(source, X, Y, Width, Height, itemToClone, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
+		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 			int inventoryLayerIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 			if (inventoryLayerIndex != -1) {

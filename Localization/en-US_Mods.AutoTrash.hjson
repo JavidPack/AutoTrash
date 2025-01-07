@@ -46,5 +46,16 @@ Configs: {
 			Tooltip: Will sell items on pickup instead of trashing them
 			Label: Sell items instead
 		}
+
+		PreventSpawn: {
+			Tooltip:
+				'''
+				Will prevent items in the Auto-Trash list from spawning.
+				Useful when AFK Farming. AutoSell will not work when this is enabled.
+
+				Does not work on server.
+				'''
+			Label: Immediately despawn Auto-Trashed items
+		}
 	}
 }

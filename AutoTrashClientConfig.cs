@@ -19,5 +19,8 @@ namespace AutoTrash
 		[DefaultValue(false)]
 		public bool SellInstead { get; set; }
 
+		[DefaultValue(false)]
+		public bool PreventSpawn { get; set; }
+
 	}
 }
