@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -15,7 +16,8 @@ namespace AutoTrash
 
 		private static int SkipSpawnIfAutoTrashed(On_Item.orig_NewItem_Inner orig, Terraria.DataStructures.IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack, bool noBroadcast, int pfix, bool noGrabDelay, bool reverseLookup) {
 			var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
-			if (clientconfig.PreventSpawn) {
+			bool suitableItemSpawn = source is EntitySource_Loot or EntitySource_TileBreak;
+			if (suitableItemSpawn && clientconfig.PreventSpawn) {
 				var fakeItem = new Item(Type); // ShouldItemBeTrashed needs an Item instance
 				var autoTrashPlayer = Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>();
 				if (autoTrashPlayer.AutoTrashEnabled && autoTrashPlayer.ShouldItemBeTrashed(fakeItem)) {
