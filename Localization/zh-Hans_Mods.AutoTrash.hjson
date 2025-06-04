@@ -27,6 +27,8 @@ Configs: {
 			Tooltip: 调整自动售出物品的价格，默认为手动卖给商人价格的20%，模组物品价格为15%
 			Label: 自动售卖 % 价格
 		}
+
+		// RejectReason: The client does not have permission to modify the autosell value.
 	}
 
 	AutoTrashClientConfig: {

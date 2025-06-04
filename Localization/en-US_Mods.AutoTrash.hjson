@@ -27,6 +27,8 @@ Configs: {
 			Tooltip: Customize the sell value of a item, default merchant sell value is 20%, mod's default sell value is ~15%
 			Label: AutoSell % sell value
 		}
+
+		RejectReason: The client does not have permission to modify the autosell value.
 	}
 
 	AutoTrashClientConfig: {

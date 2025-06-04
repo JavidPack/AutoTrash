@@ -23,6 +23,9 @@ namespace AutoTrash
 			}
 		}
 
+		// This function is not called when the player is getting a questreward, item from a chest, or fishing.
+		// Replaced with the OnPickupV2 Hook in AutoTrashSystem
+		/* 
 		public override bool OnPickup(Item item, Player player) {
 			// TODO: IL edit maybe
 			var autoTrashPlayer = player.GetModPlayer<AutoTrashPlayer>();
@@ -46,6 +49,7 @@ namespace AutoTrash
 		public override void CaughtFishStack(int type, ref int stack) {
 			AutoTrashPlayer.caughtFish.Add(type);
 		}
+		*/
 
 		internal void DrawUpdateAutoTrash() {
 			if (Main.playerInventory) {
@@ -83,6 +87,7 @@ namespace AutoTrash
 				bool enableButtonHover = false;
 				bool listButtonHover = false;
 				bool clearButtonHover = false;
+
 				if (enableButtonRectangle.Contains(mousePoint)) {
 					Main.LocalPlayer.mouseInterface = true;
 					enableButtonHover = true;
@@ -96,6 +101,7 @@ namespace AutoTrash
 						}
 					}
 				}
+
 				if (listButtonRectangle.Contains(mousePoint)) {
 					Main.LocalPlayer.mouseInterface = true;
 					listButtonHover = true;
@@ -105,6 +111,7 @@ namespace AutoTrash
 						Terraria.Audio.SoundEngine.PlaySound(AutoTrashListUI.visible ? SoundID.MenuOpen : SoundID.MenuClose);
 					}
 				}
+
 				if (clearButtonRectangle.Contains(mousePoint)) {
 					Main.LocalPlayer.mouseInterface = true;
 					clearButtonHover = true;
@@ -131,9 +138,11 @@ namespace AutoTrash
 					if (Main.mouseLeftRelease && Main.mouseLeft && autoTrashPlayer.AutoTrashEnabled) {
 						int originalID = singleSlotArray[0].type;
 
-						if (clientconfig.SellInstead) {
+						if (clientconfig.SellInstead) 
+						{
 							float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
 							var value = (int)Math.Floor(singleSlotArray[0].value * singleSlotArray[0].stack * sellPercent);
+
 							if (!Main.mouseItem.IsAir || Main.LocalPlayer.BuyItem(value))
 								Terraria.UI.ItemSlot.LeftClick(singleSlotArray, Terraria.UI.ItemSlot.Context.TrashItem);
 							else

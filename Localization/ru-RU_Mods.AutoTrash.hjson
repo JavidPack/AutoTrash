@@ -27,6 +27,8 @@ Configs: {
 			Tooltip: Настройте цену продажи предмета, цена продажи у NPC по умолчанию составляет 20%, цена продажи при помощи мода по умолчанию составляет ~ 15%
 			Label: Авто-Продажа (%) цены продажи
 		}
+
+		// RejectReason: The client does not have permission to modify the autosell value.
 	}
 
 	AutoTrashClientConfig: {

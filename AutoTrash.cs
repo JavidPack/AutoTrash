@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -27,24 +28,25 @@ namespace AutoTrash
 			UICheckbox.checkmarkTexture = null;
 		}
 
-		public override void PostSetupContent() {
-			if (!Main.dedServ)
+		public override void PostSetupContent() 
+		{
+			if (Main.netMode == NetmodeID.Server)
+				return;
+			
+			autoTrashListUI = new AutoTrashListUI();
+			autoTrashListUI.Activate();
+			autoTrashUserInterface = new UserInterface();
+			autoTrashUserInterface.SetState(autoTrashListUI);
+
+			UICheckbox.checkboxTexture = Assets.Request<Texture2D>("checkBox", AssetRequestMode.ImmediateLoad);
+			UICheckbox.checkmarkTexture = Assets.Request<Texture2D>("checkMark", AssetRequestMode.ImmediateLoad);
+
+			if (ModLoader.TryGetMod("RecipeBrowser", out Mod RecipeBrowser))
 			{
-				autoTrashListUI = new AutoTrashListUI();
-				autoTrashListUI.Activate();
-				autoTrashUserInterface = new UserInterface();
-				autoTrashUserInterface.SetState(autoTrashListUI);
+				RecipeBrowser.Call("AddItemFilter", Language.GetTextValue("Mods.AutoTrash.RecipeBrowserFilterNotAutoTrashed"), "Weapons", Assets.Request<Texture2D>("RecipeBrowserFilterNotAutotrashedIcon", AssetRequestMode.ImmediateLoad).Value,
+					(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
 
-				UICheckbox.checkboxTexture = Assets.Request<Texture2D>("checkBox", AssetRequestMode.ImmediateLoad);
-				UICheckbox.checkmarkTexture = Assets.Request<Texture2D>("checkMark", AssetRequestMode.ImmediateLoad);
-
-				if (ModLoader.TryGetMod("RecipeBrowser", out Mod RecipeBrowser))
-				{
-					RecipeBrowser.Call("AddItemFilter", Language.GetTextValue("Mods.AutoTrash.RecipeBrowserFilterNotAutoTrashed"), "Weapons", Assets.Request<Texture2D>("RecipeBrowserFilterNotAutotrashedIcon", AssetRequestMode.ImmediateLoad).Value,
-						(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
-
-					// TODO: Update RecipeBrowser with LocalizedText support, maybe some way of triggering a refresh.
-				}
+				// TODO: Update RecipeBrowser with LocalizedText support, maybe some way of triggering a refresh.
 			}
 		}
 	}

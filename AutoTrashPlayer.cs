@@ -76,6 +76,8 @@ namespace AutoTrash
 			return false; // do default behavior.
 		}
 
+		// No need for this anymore
+		/*
 		public static HashSet<int> caughtFish = new HashSet<int>();
 		public override void PreUpdate() {
 			// Fishing uses player.GetItem bypassing AutoTrash.
@@ -97,13 +99,16 @@ namespace AutoTrash
 				}
 			}
 		}
+		*/
 
 		public void OnItemAutotrashed() {
 			var clientconfig = ModContent.GetInstance<AutoTrashClientConfig>();
 			var serverconfig = ModContent.GetInstance<AutoTrashServerConfig>();
 
-			if (clientconfig.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) {
-				float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
+			if (clientconfig.SellInstead && LastAutoTrashItem.value > 0 && !(LastAutoTrashItem.type >= ItemID.CopperCoin && LastAutoTrashItem.type <= ItemID.PlatinumCoin)) 
+			{
+                float sellPercent = (serverconfig.SellValue >= 1 ? serverconfig.SellValue : 1) / 100f;
+
 				var value = Math.Floor((double)(LastAutoTrashItem.value * LastAutoTrashItem.stack * sellPercent));
 
 				var plat = Math.Floor(value / Item.platinum);

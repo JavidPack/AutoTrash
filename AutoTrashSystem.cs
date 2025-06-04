@@ -12,6 +12,29 @@ namespace AutoTrash
 	{
 		public override void Load() {
 			On_Item.NewItem_Inner += SkipSpawnIfAutoTrashed;
+
+			// Applies on chest and quest rewards as well
+			On_Player.GetItem += OnPickupV2;
+		}
+
+		private static Item OnPickupV2(On_Player.orig_GetItem orig, Player player, int plrIndex, Item item, GetItemSettings settings) 
+		{
+			AutoTrashPlayer modPlayer = player.GetModPlayer<AutoTrashPlayer>();
+
+            if (AutoTrashPlayer.IsModItem(item) && item.ModItem is Terraria.ModLoader.Default.UnloadedItem)
+            {
+				return orig(player, plrIndex, item, settings);
+            }
+
+            if (modPlayer.AutoTrashEnabled && modPlayer.ShouldItemBeTrashed(item))
+            {
+                modPlayer.LastAutoTrashItem = item;
+                modPlayer.OnItemAutotrashed();
+				//Main.item[j] = player.GetItem(player.whoAmI, Main.item[j], false, false);
+				return new Item();
+            }
+
+            return orig(player, plrIndex, item, settings);
 		}
 
 		private static int SkipSpawnIfAutoTrashed(On_Item.orig_NewItem_Inner orig, Terraria.DataStructures.IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack, bool noBroadcast, int pfix, bool noGrabDelay, bool reverseLookup) {
