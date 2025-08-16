@@ -28,11 +28,10 @@ namespace AutoTrash
 			UICheckbox.checkmarkTexture = null;
 		}
 
-		public override void PostSetupContent() 
-		{
+		public override void PostSetupContent() {
 			if (Main.netMode == NetmodeID.Server)
 				return;
-			
+
 			autoTrashListUI = new AutoTrashListUI();
 			autoTrashListUI.Activate();
 			autoTrashUserInterface = new UserInterface();
@@ -41,8 +40,7 @@ namespace AutoTrash
 			UICheckbox.checkboxTexture = Assets.Request<Texture2D>("checkBox", AssetRequestMode.ImmediateLoad);
 			UICheckbox.checkmarkTexture = Assets.Request<Texture2D>("checkMark", AssetRequestMode.ImmediateLoad);
 
-			if (ModLoader.TryGetMod("RecipeBrowser", out Mod RecipeBrowser))
-			{
+			if (ModLoader.TryGetMod("RecipeBrowser", out Mod RecipeBrowser)) {
 				RecipeBrowser.Call("AddItemFilter", Language.GetTextValue("Mods.AutoTrash.RecipeBrowserFilterNotAutoTrashed"), "Weapons", Assets.Request<Texture2D>("RecipeBrowserFilterNotAutotrashedIcon", AssetRequestMode.ImmediateLoad).Value,
 					(Predicate<Item>)((Item item) => !Main.LocalPlayer.GetModPlayer<AutoTrashPlayer>().ShouldItemBeTrashed(item)));
 
