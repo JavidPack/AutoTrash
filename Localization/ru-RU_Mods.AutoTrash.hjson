@@ -1,65 +1,65 @@
-NoValue: Нет цены
-TrashAllItemsWithNoValue: Удалить все предметы без цены
-ClickToRemove: Нажмите, чтобы удалить
-// FilterByName: Filter by Name
-// Close: Close
-YouNeedToHoldAltAndClickToClearTheList: Удерживая Alt, кликните, чтобы очистить список
-NotEnoughMoneyToReclaimAutoSellItem: Недостаточно денег для возврата предмета, который был продан при помощи Авто-Продажи
-ClickToRemoveFromAutoSellList: Нажмите, чтобы удалить из списка автоматической продажи
-ClickToRemoveFromAutoTrashList: Нажмите, чтобы удалить из списка автоматического удаления
-PlaceItemToAddToAutoSellList: Поместите предмет для добавления в спискок автоматической продажи
-PlaceItemToAddToAutoTrashList: Поместите предмет для добавления в список автоматического удаления
-EnableAutoSellToAutomaticallySellItemsOnPickup: Включите Авто-Продажу, чтобы автоматически продавать предметы при получении
-EnableAutoTrashToAutomaticallyTrashItemsOnPickup: Включите Авто-Удаление, чтобы автоматически удалять предметы при получении
-AutoSellEnabled: Автоматическая продажа включена: {0} {^0:item;items}
-AutoTrashEnabled: Автоматическое удаление включено: {0} {^0:item;items}
-AutoSellDisabled: Автоматическая продажа отключена
-AutoTrashDisabled: Автоматическое удаление отключено
-ClickToViewAutoSellList: Нажмите, чтобы просмотреть список автоматической продажи
-ClickToViewAutoTrashList: Нажмите, чтобы просмотреть список автоматического удаления
-HoldAltAndClickToClearAutoSellList: Удерживая Alt, кликните, чтобы очистить список автоматической продажи.
-HoldAltAndClickToClearAutoTrashList: Удерживая Alt, кликните, чтобы очистить список автоматического удаления
-RecipeBrowserFilterNotAutoTrashed: Не удаляется автоматически
+NoValue: Без стоимости
+TrashAllItemsWithNoValue: Все подобранные предметы, у которых нет стоимости, будут удаляться автоматически
+ClickToRemove: Убирается по нажатию
+FilterByName: Название
+Close: Закрыть
+YouNeedToHoldAltAndClickToClearTheList: Вы должны нажать удерживая Alt, чтобы очистить список предметов
+NotEnoughMoneyToReclaimAutoSellItem: У вас недостаточно монет для возврата предмета, который был продан при помощи автопродажи
+ClickToRemoveFromAutoSellList: Нажмите, чтобы забрать предмет и удалить его из списка автопродажи
+ClickToRemoveFromAutoTrashList: Нажмите, чтобы забрать предмет и удалить его из списка автоудаления
+PlaceItemToAddToAutoSellList: Поместите предмет, чтобы добавить его в список автопродажи
+PlaceItemToAddToAutoTrashList: Поместите предмет, чтобы добавить его в список автоудаления
+EnableAutoSellToAutomaticallySellItemsOnPickup: Включите автопродажу, чтобы полученные предметы из списка продавались автоматически
+EnableAutoTrashToAutomaticallyTrashItemsOnPickup: Включите автоудаление, чтобы полученные предметы из списка удалялись автоматически
+AutoSellEnabled: Автопродажа включена: в списке {0} {^0:предмет;предмета;предметов}
+AutoTrashEnabled: Автоудаление включено: в списке {0} {^0:предмет;предмета;предметов}
+AutoSellDisabled: Автопродажа отключена
+AutoTrashDisabled: Автоудаление отключено
+ClickToViewAutoSellList: Посмотреть список предметов на автопродажу
+ClickToViewAutoTrashList: Посмотреть список предметов на автоудаление
+HoldAltAndClickToClearAutoSellList: Нажмите, удерживая Alt, чтобы очистить список предметов на автопродажу
+HoldAltAndClickToClearAutoTrashList: Нажмите, удерживая Alt, чтобы очистить список предметов на автоудаление
+RecipeBrowserFilterNotAutoTrashed: Не показывать предметы из списка на автоудаление
 
 Configs: {
 	AutoTrashServerConfig: {
-		DisplayName: Конфигурация автоматического удаления (серверная)
+		DisplayName: Серверная конфигурация
 
 		SellValue: {
-			Tooltip: Настройте цену продажи предмета, цена продажи у NPC по умолчанию составляет 20%, цена продажи при помощи мода по умолчанию составляет ~ 15%
-			Label: Авто-Продажа (%) цены продажи
+			Tooltip: Базовая цена продажи предметов НИПам составляет 20%, стоимость автопродажи по умолчанию — 15%
+			Label: Стоимость автопродоваемых предметов (%)
 		}
 
-		// RejectReason: The client does not have permission to modify the autosell value.
+		RejectReason: Только у хоста есть право изменять стоимость автопродажи
 	}
 
 	AutoTrashClientConfig: {
-		DisplayName: Конфигурация автоматического удаления
+		DisplayName: Клиентская конфигурация
 
 		SlotPositionX: {
-			Tooltip: Настройте положение слота Авто-Удаления слева направо от 1-й панели быстрого доступа.
-			Label: Положение (X) значка Авто-Удаления
+			Tooltip: Определяет, каким по счёту слотом от левого края инвентаря будет расположен слот автоудаления
+			Label: Расположения слота автоудаления по X
 		}
 
 		SlotPositionY: {
-			Tooltip: Настройте положение слота Авто-Удаления сверху вниз от верхней панели быстрого доступа.
-			Label: Положение (Y) значка Авто-Удаления
+			Tooltip: Определяет, каким по счёту слотом от верхнего края инвентаря будет расположен слот автоудаления
+			Label: Расположения слота автоудаления по Y
 		}
 
 		SellInstead: {
-			Tooltip: Следует ли продавать предметы после их поднятия, а не выбрасывать их.
-			Label: Продавать ли предметы сразу же
+			Tooltip: Вы будете обратно получать часть стоимости от автоматически удалённых предметов
+			Label: Автопродажа вместо автоудаления
 		}
 
 		PreventSpawn: {
-			/* Tooltip:
+			Tooltip:
 				'''
-				Will prevent items in the Auto-Trash list from spawning.
-				Useful when AFK Farming. AutoSell will not work when this is enabled.
+				Предметы из списка на автоудаление не будут выпадать вовсе. Полезно для AFK-фарма
+				Автопродажа не будет работать, если эта функция включена
 
-				Does not work on server.
-				''' */
-			// Label: Immediately despawn Auto-Trashed items
+				Не работает в мультиплеере.
+				'''
+			Label: Моментальный деспавн предметов
 		}
 	}
 }
