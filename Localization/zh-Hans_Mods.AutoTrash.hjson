@@ -1,8 +1,8 @@
 NoValue: 无价值
 TrashAllItemsWithNoValue: 将所有无价值物品丢弃
 ClickToRemove: 点击以移出自动丢弃列表
-// FilterByName: Filter by Name
-// Close: Close
+FilterByName: 按名称筛选
+Close: 关闭
 YouNeedToHoldAltAndClickToClearTheList: 你需要按住alt再左键单击以清空自动丢弃列表
 NotEnoughMoneyToReclaimAutoSellItem: 没有足够的钱来赎回自动售卖的物品
 ClickToRemoveFromAutoSellList: 点击以移出自动售卖清单
@@ -30,7 +30,7 @@ Configs: {
 			Label: 自动售卖 % 价格
 		}
 
-		// RejectReason: The client does not have permission to modify the autosell value.
+		RejectReason: 客户端没有权限修改自动售卖价格
 	}
 
 	AutoTrashClientConfig: {
@@ -52,14 +52,14 @@ Configs: {
 		}
 
 		PreventSpawn: {
-			/* Tooltip:
+			Label: 立即清除自动垃圾物品
+			Tooltip:
 				'''
-				Will prevent items in the Auto-Trash list from spawning.
-				Useful when AFK Farming. AutoSell will not work when this is enabled.
+				会阻止智能垃圾桶中的物品生成
+				在挂机刷怪时非常有用. 启用此功能后, 自动售卖将无法工作
 
-				Does not work on server.
-				''' */
-			// Label: Immediately despawn Auto-Trashed items
+				服务端不会生效
+				'''
 		}
 	}
 }
